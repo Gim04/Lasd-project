@@ -14,7 +14,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class DictionaryContainer:TestableContainer:TestableContainer<Data> {
+class DictionaryContainer:TestableContainer: virtual public TestableContainer<Data> {
 
 private:
 
@@ -27,44 +27,44 @@ protected:
 public:
 
   // Destructor
-  ~DictionaryContainer();
+  virtual ~DictionaryContainer() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  DictionaryContainer<Data>& operator=(const DictionaryContainer<Data>&); // Copy assignment of abstract types is not possible.
+  DictionaryContainer<Data>& operator=(const DictionaryContainer<Data>&) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  DictionaryContainer<Data>& operator=(DictionaryContainer<Data>&&); // Move assignment of abstract types is not possible.
+  DictionaryContainer<Data>& operator=(DictionaryContainer<Data>&&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const DictionaryContainer<Data>& x)const; // Comparison of abstract types is not possible.
-  bool operator!=(const DictionaryContainer<Data>& x)const; // Comparison of abstract types is not possible.
+  bool operator==(const DictionaryContainer<Data>& x) const noexcept = delete; // Comparison of abstract types is not possible.
+  bool operator!=(const DictionaryContainer<Data>& x) const noexcept = delete; // Comparison of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Specific member functions
 
-  bool Insert(const Data d); // Copy of the value
-  bool Insert(const Data& d); // Move of the value
-  bool Remove(const Data& d);
+  virtual bool Insert(const Data& d) = 0; // Copy of the value
+  virtual bool Insert(Data&& d) = 0; // Move of the value
+  virtual bool Remove(const Data& d) = 0;
 
-  bool InsertAll(const TraversableContainer<Data>); // Copy of the value; From TraversableContainer; True if all are inserted
-  bool InsertAll(const MappableContainer<Data>&); // Move of the value; From MappableContainer; True if all are inserted
-  bool RemoveAll(const TraversableContainer<Data>); // From TraversableContainer; True if all are removed
+  inline virtual bool InsertAll(const TraversableContainer<Data>&); // Copy of the value; From TraversableContainer; True if all are inserted
+  inline virtual bool InsertAll(MappableContainer<Data>&&); // Move of the value; From MappableContainer; True if all are inserted
+  inline virtual bool RemoveAll(const TraversableContainer<Data>&); // From TraversableContainer; True if all are removed
 
-  bool InsertSome(const TraversableContainer<Data>); // Copy of the value; From TraversableContainer; True if some is inserted
-  bool InsertSome(const MappableContainer<Data>&); // Move of the value; From MappableContainer; True if some is inserted
-  bool RemoveSome(const TraversableContainer<Data>); // From TraversableContainer; True if some is removed
+  inline virtual bool InsertSome(const TraversableContainer<Data>&); // Copy of the value; From TraversableContainer; True if some is inserted
+  inline virtual bool InsertSome(MappableContainer<Data>&&); // Move of the value; From MappableContainer; True if some is inserted
+  inline virtual bool RemoveSome(const TraversableContainer<Data>&); // From TraversableContainer; True if some is removed
 
 };
 
 /* ************************************************************************** */
 
 template <typename Data>
-class OrderedDictionaryContainer:DictionaryContainer<Data> {
+class OrderedDictionaryContainer: virtual public DictionaryContainer<Data> {
 
 private:
 
@@ -73,21 +73,21 @@ protected:
 public:
 
   // Destructor
-  ~OrderedDictionaryContainer() specifiers
+  virtual ~OrderedDictionaryContainer() = default;
 
   /* ************************************************************************ */
 
-  // Copy assignment
-  OrderedDictionaryContainer& operator=(const OrderedDictionaryContainer&); // Copy assignment of abstract types is not possible.
+  // Copy assignment 
+  OrderedDictionaryContainer<Data>& operator=(const OrderedDictionaryContainer<Data>&) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  OrderedDictionaryContainer& operator=(OrderedDictionaryContainer&&); // Move assignment of abstract types is not possible.
+  OrderedDictionaryContainer<Data>& operator=(OrderedDictionaryContainer<Data>&&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const OrderedDictionaryContainer& x) const; // Comparison of abstract types is not possible.
-  bool operator!=(const OrderedDictionaryContainer& x) const; // Comparison of abstract types is not possible.
+  bool operator==(const OrderedDictionaryContainer<Data>& x) const noexcept = delete; // Comparison of abstract types is not possible.
+  bool operator!=(const OrderedDictionaryContainer<Data>& x) const noexcept = delete; // Comparison of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -101,11 +101,11 @@ public:
   Data MaxNRemove(); // (concrete function must throw std::length_error when empty)
   void RemoveMax(); // (concrete function must throw std::length_error when empty)
 
-  Data Predecessor(Data& d); // (concrete function must throw std::length_error when not found)
+  Data Predecessor(Data& d) const; // (concrete function must throw std::length_error when not found)
   Data PredecessorNRemove(Data& d); // (concrete function must throw std::length_error when not found)
-  void RemovePredecessor(argument& d); // (concrete function must throw std::length_error when not found)
+  void RemovePredecessor(Data& d); // (concrete function must throw std::length_error when not found)
 
-  Data Successor(Data& d); // (concrete function must throw std::length_error when not found)
+  Data Successor(Data& d) const; // (concrete function must throw std::length_error when not found)
   Data SuccessorNRemove(Data& d); // (concrete function must throw std::length_error when not found)
   void RemoveSuccessor(Data& d); // (concrete function must throw std::length_error when not found)
 
