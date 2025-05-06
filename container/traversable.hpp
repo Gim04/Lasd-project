@@ -179,6 +179,6 @@ public:
 
 }
 
-//#include "traversable.cpp"
+#include "traversable.cpp"
 
 #endif

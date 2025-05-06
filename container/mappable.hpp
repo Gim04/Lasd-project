@@ -156,6 +156,6 @@ public:
 
 }
 
-//#include "mappable.cpp"
+#include "mappable.cpp"
 
 #endif

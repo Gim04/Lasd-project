@@ -115,6 +115,6 @@ public:
 
 }
 
-//#include "dictionary.cpp"
+#include "dictionary.cpp"
 
 #endif
