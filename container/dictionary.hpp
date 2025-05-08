@@ -14,7 +14,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class DictionaryContainer: virtual public TestableContainer<Data> {
+class DictionaryContainer: virtual public TestableContainer<Data>{
 
 private:
 
@@ -64,7 +64,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class OrderedDictionaryContainer: virtual public DictionaryContainer<Data> {
+class OrderedDictionaryContainer: virtual public DictionaryContainer<Data> , virtual public PreOrderMappableContainer<Data>{
 
 private:
 

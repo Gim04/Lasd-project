@@ -31,7 +31,7 @@ namespace lasd {
     
     template <typename Data>
     template <typename Accumulator>
-    Accumulator PreOrderTraversableContainer<Data>::PreOrderFold(FoldFun<Accumulator> x, Accumulator acc)
+    Accumulator PreOrderTraversableContainer<Data>::PreOrderFold(FoldFun<Accumulator> x, Accumulator acc) const
     {
         PreOrderFold(
             [x, &acc](const Data& d)
@@ -43,7 +43,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void PreOrderTraversableContainer<Data>::Traverse(TraverseFun& x)
+    void PreOrderTraversableContainer<Data>::Traverse(TraverseFun& x) const
     {
         PreOrderTraverse(
             [x, &acc](const Data& d)
@@ -56,7 +56,7 @@ namespace lasd {
 
     template <typename Data>
     template <typename Accumulator>
-    Accumulator PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator> x, Accumulator acc)
+    Accumulator PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator> x, Accumulator acc) const
     {
         PostOrderFold(
             [x, &acc](const Data& d)
@@ -68,7 +68,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void PostOrderTraversableContainer<Data>::Traverse(TraverseFun& x)
+    void PostOrderTraversableContainer<Data>::Traverse(TraverseFun& x) const
     {
         PostOrderTraverse(
             [x, &acc](const Data& d)

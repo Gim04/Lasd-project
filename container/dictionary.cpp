@@ -95,6 +95,20 @@ namespace lasd {
             throw std::length_error("Empty container!");
         }
 
+        Data min;
+        ulong i = 0;
+        Traverse(
+            [this, &](const Data& d)
+            {
+                if(i==0) min = d;
+
+                if(data<min)
+                {
+                    min = d;
+                }
+            }
+        );
+        return min;
     }
 
     template<typename Data>
@@ -104,7 +118,8 @@ namespace lasd {
         {
             throw std::length_error("Empty container!");
         }
-    } 
+
+    }
 
     template<typename Data>
     void OrderedDictionaryContainer<Data>::RemoveMin()
@@ -122,6 +137,20 @@ namespace lasd {
         {
             throw std::length_error("Empty container!");
         }
+        Data max;
+        ulong i = 0;
+        Traverse(
+            [this, &](const Data& d)
+            {
+                if(i==0) max = d;
+
+                if(data>max)
+                {
+                    max = d;
+                }
+            }
+        );
+        return max;
     }  
 
     template<typename Data>
@@ -145,7 +174,36 @@ namespace lasd {
     template<typename Data>
     Data OrderedDictionaryContainer<Data>::Predecessor(Data& d) const
     {
-        
+        Data x;
+        ulong i = 0;
+        Traverse(
+            [this, &](const Data& d)
+            {
+                if(x ==d)
+                    return;
+                
+                i++;
+            }
+        );
+
+        ulong count = 0;
+        Traverse(
+            [this, &](const Data& d)
+            {
+                if(i-1 = count)
+                {
+                    x = data;
+                    return;
+                }
+
+                if(count>= size)
+                {
+                    throw std::length_error("Predecessor not found!");
+                }
+            }
+        )
+
+        return x;
     }
 
     template<typename Data>
@@ -163,7 +221,36 @@ namespace lasd {
     template<typename Data>
     Data OrderedDictionaryContainer<Data>::Successor(Data& d) const
     {
+        Data x;
+        ulong i = 0;
+        Traverse(
+            [this, &](const Data& d)
+            {
+                if(x ==d)
+                    return;
+                
+                i++;
+            }
+        );
 
+        ulong count = 0;
+        Traverse(
+            [this, &](const Data& d)
+            {
+                if(i+1 = count)
+                {
+                    x = data;
+                    return;
+                }
+
+                if(count>= size)
+                {
+                    throw std::length_error("Successor not found!");
+                }
+            }
+        )
+
+        return x;
     }
 
     template<typename Data>
