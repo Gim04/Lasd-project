@@ -70,6 +70,8 @@ private:
 
 protected:
 
+  using Container::size;
+
 public:
 
   // Destructor
