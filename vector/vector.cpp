@@ -1,10 +1,198 @@
-
+#include "vector.hpp"
 namespace lasd {
 
-/* ************************************************************************** */
+    template <typename Data>
+    Vector<Data>::Vector(const ulong size)
+    {
+        this->size = size;
+        buff = new Data[size];
+    }
 
-// ...
+    template <typename Data>
+    Vector<Data>::Vector(const TraversableContainer<Data>& c)
+    {
+        this->size = c.size();
+        buff = new Data[size];
+        
+        ulong i = 0;
+        Traverse(
+            [&](const Data& d)
+            {
+                buff[i] = d;
+                i++;
+            }
+        );
+    } 
 
-/* ************************************************************************** */
+    template <typename Data>
+    Vector<Data>::Vector(const MappableContainer<Data>& c)
+    {
+        this->size = c.size();
+        buff = new Data[size];
+        
+        ulong i = 0;
+        Map(
+            [&](const Data& d)
+            {
+                buff[i] = d;
+                i++;
+            }
+        );
+    }
+
+
+    template <typename Data>
+    Vector<Data>::Vector (const Vector<Data>& v)
+    {
+        size = v.size;
+        buff = new Data[size];
+        std::copy(v.buff, v.buff + size, buff);
+
+    }
+
+    template <typename Data>
+    Vector<Data>::Vector (Vector<Data>&& v)
+    {
+        std::swap(size, v.size);
+        std::swap(buff, v.buff);
+    }
+
+    template <typename Data>
+    Vector<Data>& Vector<Data>::operator=(const Vector<Data>& v)
+    {
+        Vector<Data>* tmp = new Vector<Data>(v);
+        std::swap(*tmp, *this);
+        delete tmp;
+        return *this;
+
+    }
+
+    template <typename Data>
+    Vector<Data>&  Vector<Data>::operator=(Vector<Data>&&)
+    {
+        std::swap(size, v.size);
+        std::swap(buff, v.buff);
+        return *this;
+    }
+
+    template <typename Data>
+    bool Vector<Data>::operator==(const Vector<Data>& x) const noexcept
+    {
+        if(size == x.size)
+        {
+            for(ulong i = 0; i<size; i++)
+            {
+                if(buff[i] != x.buff[i])
+                    return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+        return true;
+    }
+
+    template <typename Data>
+    bool Vector<Data>::operator!=(const Vector<Data>& x) const noexcept
+    {
+        return !(*this == x);
+    }
+
+    template <typename Data>
+    Data& Vector<Data>::operator[](ulong index)
+    {
+        if(index<size)
+        {
+            return buffer[index];
+        }
+
+        throw std::out_of_range("Out of bound!");
+    }
+
+    template <typename Data>
+    Data& Vector<Data>::Front()
+    {
+        if(buff != nullptr)
+        {
+            return buff[0];
+        }
+
+        throw std::length_error("Empty vector!")
+    }
+  
+    template <typename Data>
+    Data& Vector<Data>::Back()
+    {
+        if(buff != nullptr)
+        {
+            return buff[size-1];
+        }
+
+        throw std::length_error("Empty vector!")
+    }
+    
+  
+    template <typename Data>
+    const Data& Vector<Data>::operator[](const ulong index) const
+    {
+        if(index<size)
+        {
+            return buffer[index];
+        }
+
+        throw std::out_of_range("Out of bound!");
+    }
+  
+    template <typename Data>
+    const Data& Vector<Data>::Front() const
+    {
+        if(buff != nullptr)
+        {
+            return buff[0];
+        }
+
+        throw std::length_error("Empty vector!")
+    }
+  
+    template <typename Data>
+    const Data& Vector<Data>::Back() const
+    {
+        if(buff != nullptr)
+        {
+            return buff[size-1];
+        }
+
+        throw std::length_error("Empty vector!")
+    }
+  
+    template <typename Data>
+    void Vector<Data>::Resize(ulong size) 
+    {
+        if(size == 0)
+        {
+            Clear();
+        }else
+        {
+            Data* newbuff = new Data[size];
+            for(ulong i = 0; i<size; i++)
+            {
+                newbuff[i] = buff[i];
+            }
+            delete[] buff;
+            buff = newbuff;
+            this->size = size;
+        }
+    }
+  
+
+    template <typename Data>
+    inline void Vector<Data>::Clear() 
+    {
+        delete[] buff;
+        buff = nullptr;
+        size = 0;
+    }
+  
 
 }

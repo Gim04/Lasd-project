@@ -23,7 +23,7 @@ protected:
 
   using Container::size;
 
-  // ...
+  Data * buff = nullptr;
 
 public:
 
@@ -53,10 +53,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  Vector<Data>& operarator=(const Vector<Data>&);
+  Vector<Data>& operator=(const Vector<Data>&);
 
   // Move assignment
-  Vector<Data>& operarator=(Vector<Data>&&);
+  Vector<Data>& operator=(Vector<Data>&&);
 
   /* ************************************************************************ */
 
