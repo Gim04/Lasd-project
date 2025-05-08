@@ -112,7 +112,7 @@ public:
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
 
   template <typename Accumulator>
-  Accumulator PreOrderFold(FoldFun x, Accumulator acc);
+  Accumulator PreOrderFold(FoldFun<Accumulator> x, Accumulator acc);
 
   /* ************************************************************************ */
 
@@ -166,7 +166,7 @@ public:
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
 
   template <typename Accumulator>
-  Accumulator PostOrderFold(FoldFun x, Accumulator acc);
+  Accumulator PostOrderFold(FoldFun<Accumulator> x, Accumulator acc);
   /* ************************************************************************ */
 
   // Specific member function (inherited from TraversableContainer)
