@@ -86,7 +86,7 @@ namespace lasd {
         return ret;
     }
 
-
+    /*
     template<typename Data>
     Data OrderedDictionaryContainer<Data>::Min() const
     {
@@ -264,6 +264,6 @@ namespace lasd {
     {
 
     } 
-
+    */
 
 }

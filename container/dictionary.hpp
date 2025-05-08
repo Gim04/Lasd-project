@@ -64,7 +64,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class OrderedDictionaryContainer: virtual public DictionaryContainer<Data> , virtual public PreOrderMappableContainer<Data>{
+class OrderedDictionaryContainer: virtual public DictionaryContainer<Data>{
 
 private:
 
@@ -95,21 +95,21 @@ public:
 
   // Specific member functions
 
-  Data Min() const; // (concrete function must throw std::length_error when empty)
-  Data MinNRemove(); // (concrete function must throw std::length_error when empty)
-  void RemoveMin(); // (concrete function must throw std::length_error when empty)
+  virtual Data Min() const = 0; // (concrete function must throw std::length_error when empty)
+  virtual Data MinNRemove() = 0; // (concrete function must throw std::length_error when empty)
+  virtual void RemoveMin() = 0; // (concrete function must throw std::length_error when empty)
 
-  Data Max() const; // (concrete function must throw std::length_error when empty)
-  Data MaxNRemove(); // (concrete function must throw std::length_error when empty)
-  void RemoveMax(); // (concrete function must throw std::length_error when empty)
+  virtual Data Max() const = 0; // (concrete function must throw std::length_error when empty)
+  virtual Data MaxNRemove() = 0; // (concrete function must throw std::length_error when empty)
+  virtual void RemoveMax() = 0 ; // (concrete function must throw std::length_error when empty)
 
-  Data Predecessor(Data& d) const; // (concrete function must throw std::length_error when not found)
-  Data PredecessorNRemove(Data& d); // (concrete function must throw std::length_error when not found)
-  void RemovePredecessor(Data& d); // (concrete function must throw std::length_error when not found)
+  virtual Data Predecessor(Data& d) const = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data PredecessorNRemove(Data& d) = 0; // (concrete function must throw std::length_error when not found)
+  virtual void RemovePredecessor(Data& d) = 0; // (concrete function must throw std::length_error when not found)
 
-  Data Successor(Data& d) const; // (concrete function must throw std::length_error when not found)
-  Data SuccessorNRemove(Data& d); // (concrete function must throw std::length_error when not found)
-  void RemoveSuccessor(Data& d); // (concrete function must throw std::length_error when not found)
+  virtual Data Successor(Data& d) const = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data SuccessorNRemove(Data& d) = 0; // (concrete function must throw std::length_error when not found)
+  virtual void RemoveSuccessor(Data& d) = 0; // (concrete function must throw std::length_error when not found)
 
 };
 
