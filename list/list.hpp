@@ -27,7 +27,7 @@ protected:
   struct Node {
 
     Data data;
-    Node* next;
+    Node* next = nullptr;
 
     /* ********************************************************************** */
 
@@ -41,37 +41,38 @@ protected:
     /* ********************************************************************** */
 
     // Copy constructor
-    Node(const Node<Data>&);
+    Node(const Node& n)
+    {
+      data = n.data;
+    }
 
     // Move constructor
-    Node(Node<Data>&&);
+    Node(Node&& n);
 
     /* ********************************************************************** */
 
     // Destructor
-    ~Node() = default;
+    virtual ~Node();
 
     /* ********************************************************************** */
 
     // Comparison operators
-    bool operator==(const Node<Data>& x) const noexcept
+    bool operator==(const Node& n) const noexcept
     {
-      return (this->data == x.data);
+      return (this->data == n.data) && (this->next == n.next);
     } 
-    bool operator!=(const Node<Data>& x) const noexcept
+    bool operator!=(const Node& n) const noexcept
     {
-      return !(*this == x);
+      return !(*this == n);
     }
 
     /* ********************************************************************** */
 
-    // Specific member functions
-
-    // ...
-
+      virtual Node* Clone(Node* n);
   };
 
-  // ...
+  Node* head = nullptr;
+  Node* tail = nullptr;
 
 public:
 
@@ -82,7 +83,7 @@ public:
 
   // Specific constructor
   List(const TraversableContainer<Data>& x); // A list obtained from a TraversableContainer
-  List(const MappableContainer<Data>& x); // A list obtained from a MappableContainer
+  List(MappableContainer<Data>& x); // A list obtained from a MappableContainer
 
   /* ************************************************************************ */
 
@@ -108,8 +109,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const List<Data>& x) const noexcept;
-  bool operator!=(const List<Data>& x) const noexcept;
+  bool operator==(const List<Data>& n) const noexcept;
+  bool operator!=(const List<Data>& n) const noexcept;
 
   /* ************************************************************************ */
 
@@ -192,7 +193,11 @@ public:
 
 protected:
 
-  // Auxiliary functions, if necessary!
+  void PreOrderTraverse(TraverseFun x, const Node* n) const;
+  void PostOrderTraverse(TraverseFun x, const Node* n) const;
+
+  void PreOrderMap(MapFun x, Node* n);
+  void PostOrderMap(MapFun x, Node* n);
 
 };
 
