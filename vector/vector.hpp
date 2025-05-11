@@ -35,7 +35,7 @@ public:
   // Specific constructors
   Vector(const ulong size); // A vector with a given initial dimension
   Vector(const TraversableContainer<Data>&); // A vector obtained from a TraversableContainer
-  Vector(const MappableContainer<Data>&); // A vector obtained from a MappableContainer
+  Vector(MappableContainer<Data>&&); // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
@@ -112,7 +112,7 @@ private:
 
 protected:
 
-  // using Container::???;
+  using Container::size;
 
   // ...
 

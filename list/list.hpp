@@ -83,7 +83,7 @@ public:
 
   // Specific constructor
   List(const TraversableContainer<Data>& x); // A list obtained from a TraversableContainer
-  List(MappableContainer<Data>& x); // A list obtained from a MappableContainer
+  List(MappableContainer<Data>&& x); // A list obtained from a MappableContainer
 
   /* ************************************************************************ */
 

@@ -27,7 +27,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    List<Data>::List(MappableContainer<Data>& x)
+    List<Data>::List(MappableContainer<Data>&& x)
     {
         Map(
             [&](Data& d)

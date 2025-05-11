@@ -25,7 +25,7 @@ namespace lasd {
     } 
 
     template <typename Data>
-    Vector<Data>::Vector(const MappableContainer<Data>& c)
+    Vector<Data>::Vector(MappableContainer<Data>&& c)
     {
         this->size = c.size();
         buff = new Data[size];
