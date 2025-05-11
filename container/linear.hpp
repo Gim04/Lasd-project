@@ -166,7 +166,9 @@ protected:
 
   // Auxiliary member functions
 
-  // ...
+  void QuickSort(ulong p, ulong r) noexcept;
+   
+  ulong Partition(ulong p, ulong r) noexcept;
 
 };
 

@@ -114,6 +114,11 @@ public:
 protected:
 
   // Auxiliary functions, if necessary!
+  void Sort() noexcept;
+
+  void QuickSort(ulong p, ulong r) noexcept;
+   
+  ulong Partition(ulong p, ulong r) noexcept;
 
 };
 

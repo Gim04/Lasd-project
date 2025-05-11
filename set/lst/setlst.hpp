@@ -14,9 +14,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class SetLst {
-  // Must extend Set<Data>,
-  //             List<Data>
+class SetLst: virtual public Set<Data>, virtual public List<Data>{
 
 private:
 
@@ -24,97 +22,102 @@ private:
 
 protected:
 
-  // using Container::???;
+  using Container::size;
 
   // ...
 
 public:
 
   // Default constructor
-  // SetLst() specifiers;
+  SetLst() = default;
 
   /* ************************************************************************ */
 
   // Specific constructors
-  // SetLst(argument) specifiers; // A set obtained from a TraversableContainer
-  // SetLst(argument) specifiers; // A set obtained from a MappableContainer
+  SetLst(const TraversableContainer<Data>& c); // A set obtained from a TraversableContainer
+  SetLst(MappableContainer<Data>&& c); // A set obtained from a MappableContainer
+
 
   /* ************************************************************************ */
 
   // Copy constructor
-  // SetLst(argument) specifiers;
+  SetLst(const SetLst<Data>&);
 
   // Move constructor
-  // SetLst(argument) specifiers;
+  SetLst(SetLst<Data>&&);
 
   /* ************************************************************************ */
 
   // Destructor
-  // ~SetLst() specifiers;
+  ~SetLst();
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument) specifiers;
+  SetLst<Data>& operator=(const SetLst<Data>&);
 
   // Move assignment
-  // type operator=(argument) specifiers;
+  SetLst<Data>& operator=(SetLst<Data>&&);
 
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
+  bool operator==(const SetLst<Data>&) const noexcept;
+  bool operator!=(const SetLst<Data>&) const noexcept;
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from OrderedDictionaryContainer)
 
-  // type Min(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
-  // type MinNRemove(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
-  // type RemoveMin(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
+  Data Min() const override;  
+  Data MinNRemove() override;  
+  void RemoveMin() override;  
 
-  // type Max(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
-  // type MaxNRemove(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
-  // type RemoveMax(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
+  Data Max() const override;  
+  Data MaxNRemove() override;  
+  void RemoveMax()  override;  
 
-  // type Predecessor(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
-  // type PredecessorNRemove(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
-  // type RemovePredecessor(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
+  Data Predecessor(Data& d) const override;   
+  Data PredecessorNRemove(Data& d) override;   
+  void RemovePredecessor(Data& d) override; 
 
-  // type Successor(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
-  // type SuccessorNRemove(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
-  // type RemoveSuccessor(argument) specifiers; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
+  Data Successor(Data& d) const override;   
+  Data SuccessorNRemove(Data& d) override;   
+  void RemoveSuccessor(Data& d) override;   
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from DictionaryContainer)
 
-  // type Insert(argument) specifiers; // Override DictionaryContainer member (copy of the value)
-  // type Insert(argument) specifiers; // Override DictionaryContainer member (move of the value)
-  // type Remove(argument) specifiers; // Override DictionaryContainer member
-
+  bool Insert(const Data& d) override; // Copy of the value
+  bool Insert(Data&& d) override; // Move of the value
+  bool Remove(const Data& d) override;
   /* ************************************************************************ */
 
   // Specific member functions (inherited from LinearContainer)
 
-  // type operator[](argument) specifiers; // Override LinearContainer member (must throw std::out_of_range when out of range)
+  const Data& operator[](const ulong index) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
 
   /* ************************************************************************** */
 
   // Specific member function (inherited from TestableContainer)
 
-  // type Exists(argument) specifiers; // Override TestableContainer member
+  bool Exists(const Data& d) const noexcept override;  // Override TestableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from ClearableContainer)
 
-  // type Clear() specifiers; // Override ClearableContainer member
+  inline void Clear() override; // Override ClearableContainer member
 
 protected:
 
   // Auxiliary functions, if necessary!
+  void Sort() noexcept;
+
+  void QuickSort(ulong p, ulong r) noexcept;
+   
+  ulong Partition(ulong p, ulong r) noexcept;
 
 };
 

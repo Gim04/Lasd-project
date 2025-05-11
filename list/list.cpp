@@ -88,11 +88,11 @@ namespace lasd {
     }
 
     template<typename Data>
-    List<Data>& List<Data>::operator=(List<Data>&&)
+    List<Data>& List<Data>::operator=(List<Data>&& n)
     {
-        std::swap(tail, node.tail);
-        std::swap(head, node.head);
-        std::swap(size, node.size);
+        std::swap(tail, n.tail);
+        std::swap(head, n.head);
+        std::swap(size, n.size);
 
         return *this;
     }

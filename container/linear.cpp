@@ -70,24 +70,38 @@ namespace lasd {
         }
     }
 
-    template <typename Data>
-    void  SortableLinearContainer<Data>::Sort() noexcept
+    template<typename Data>
+    void SortableLinearContainer<Data>::Sort() noexcept 
     {
-        
-        for(i = 0; i<size-1; i++)
-        {
-            ulong min = i;
-            for(j = i+1; j<size; j++)
-            {
-                if(operator[](j) < operator[](min))
-                {
-                    min = j;
-                }
-            }
-
-            Data tmp = operator[](i);
-            operator[](i) = operator[](min);
-            operator[](min) = tmp;
-        }    
+      QuickSort(0, size - 1);
+    }
+    
+    template<typename Data>
+    void SortableLinearContainer<Data>::QuickSort(ulong p, ulong r) noexcept 
+    {
+      if (p < r) 
+      {
+        ulong q = Partition(p, r);
+        QuickSort(p, q);
+        QuickSort(q + 1, r);
+      }
+    }
+    
+    template<typename Data>
+    ulong SortableLinearContainer<Data>::Partition(ulong p, ulong r) noexcept 
+    {
+      Data x = this->operator[](p);
+      ulong i = p - 1;
+      ulong j = r + 1;
+      do 
+      {
+        do { j--; }
+        while (x < this->operator[](j));
+        do { i++; }
+        while (x > this->operator[](i));
+        if (i < j) { std::swap(this->operator[](i), this->operator[](j)); }
+      }
+      while (i < j);
+      return j;
     }
 }
