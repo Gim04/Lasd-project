@@ -58,6 +58,12 @@ namespace lasd {
     }
 
     template <typename Data>
+    Vector<Data>::~Vector()
+    {
+        delete[] buff;
+    }
+
+    template <typename Data>
     Vector<Data>& Vector<Data>::operator=(const Vector<Data>& v)
     {
         Vector<Data>* tmp = new Vector<Data>(v);
@@ -194,5 +200,33 @@ namespace lasd {
         size = 0;
     }
   
+    template<typename Data>
+    SortableVector<Data>::SortableVector(const ulong size): Vector<Data>(size) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(const TraversableContainer<Data>& c): Vector<Data>(c) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(MappableContainer<Data>&& c): Vector<Data>(std::move(c)) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(const SortableVector<Data>& c): Vector<Data>(other) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(SortableVector<Data>&& c): Vector<Data>(std::move(c)) {}
+
+    template<typename Data>
+    SortableVector<Data> & SortableVector<Data>::operator=(const SortableVector<Data> & c) 
+    {
+        Vector<Data>::operator=(c);
+        return *this;
+    }
+
+    template<typename Data>
+    SortableVector<Data> & SortableVector<Data>::operator=(SortableVector<Data> && c)
+    {
+        Vector<Data>::operator=(std::move(c));
+        return *this;
+    }
 
 }

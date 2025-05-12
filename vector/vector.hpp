@@ -48,7 +48,7 @@ public:
   /* ************************************************************************ */
 
   // Destructor
-  ~Vector() = default;
+  virtual ~Vector();
 
   /* ************************************************************************ */
 
@@ -126,7 +126,7 @@ public:
   // Specific constructors
   SortableVector(const ulong size); // A vector with a given initial dimension
   SortableVector(const TraversableContainer<Data>&); // A vector obtained from a TraversableContainer
-  SortableVector(const Mappable<Data>&); // A vector obtained from a MappableContainer
+  SortableVector(MappableContainer<Data>&&); // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
