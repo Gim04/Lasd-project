@@ -97,18 +97,9 @@ namespace lasd {
     {
         if(size == 0)
         {
-            throw std::length_error("Empty vector!");
+            throw std::length_error("Empty List!");
         }
-        Data min = operator[](0);
-        for(ulong i = 1; i<size; i++)
-        {
-            if(min>operator[](i))
-            {
-                min = operator[](i);
-            }
-        }
-
-        return min;
+        return head->data;
     }
 
     template<typename Data>
@@ -116,24 +107,14 @@ namespace lasd {
     {
         if(size == 0)
         {
-            throw std::length_error("Empty vector!");
+            throw std::length_error("Empty List!");
         }
 
-        ulong index = 0;
-        Data min = vec[0];
-        for(ulong i = 1; i<size; i++)
-        {
-            if(min>vec[i])
-            {
-                min = vec[i];
-                index = i;
-            }
-        }
-
-        vec[index] = vec[size-1]; //swap with the element that must be removed
-        vec.Resize(size-1); 
-
-        Sort();
+        Data min = head->data;
+        Node* newHead = head->next;
+        delete head;
+        size--;
+        head = newHead;
 
         return min;
 
@@ -144,23 +125,13 @@ namespace lasd {
     {
         if(size == 0)
         {
-            throw std::length_error("Empty vector!");
+            throw std::length_error("Empty List!");
         }
 
-        ulong index = 0;
-        Data min = vec[0];
-        for(ulong i = 1; i<size; i++)
-        {
-            if(min>vec[i])
-            {
-                min = vec[i];
-                index = i;
-            }
-        }
-
-        vec[index] = vec[size-1]; //swap
-        vec.Resize(size-1);
-        Sort();
+        Node* newHead = head->next;
+        delete head;
+        size--;
+        head = newHead;
 
     }
 
@@ -169,19 +140,10 @@ namespace lasd {
     {   
         if(size == 0)
         {
-            throw std::length_error("Empty vector!");
+            throw std::length_error("Empty List!");
         }
 
-        Data max = operator[](0);
-        for(ulong i = 1; i<size; i++)
-        {
-            if(max<operator[](i))
-            {
-                max = operator[](i);
-            }
-        }
-
-        return max;
+        return tail->data;
 
     }  
 
@@ -190,23 +152,20 @@ namespace lasd {
     {
         if(size == 0)
         {
-            throw std::length_error("Empty vector!");
+            throw std::length_error("Empty List!");
         }
 
-        ulong index = 0;
-        Data max = vec[0];
-        for(ulong i = 1; i<size; i++)
+        Node* newTail = head;
+        while(newHead->next != tail)
         {
-            if(max<vec[i])
-            {
-                max = vec[i];
-                index = i;
-            }
+            newTail = newHead->next;
         }
 
-        vec[index] = vec[size-1];//swap
-        vec.Resize(size-1);
-        Sort();
+        Data max = tail->data;
+        newTail->next = nullptr;
+        delete tail;
+        size--;
+        tail = newTail;
 
         return max;
     }  
@@ -216,23 +175,19 @@ namespace lasd {
     {
         if(size == 0)
         {
-            throw std::length_error("Empty vector!");
+            throw std::length_error("Empty List!");
         }
 
-        ulong index = 0;
-        Data max = vec[0];
-        for(ulong i = 1; i<size; i++)
+        Node* newTail = head;
+        while(newHead->next != tail)
         {
-            if(max<vec[i])
-            {
-                max = vec[i];
-                index = i;
-            }
+            newTail = newHead->next;
         }
-
-        vec[index] = vec[size-1];//swap
-        vec.Resize(size-1);
-        Sort();
+        
+        newTail->next = nullptr;
+        delete tail;
+        size--;
+        tail = newTail;
     } 
 
     template<typename Data>
@@ -289,13 +244,31 @@ namespace lasd {
             throw std::length_error("Predecessor not found!");
         }
 
-        Data predecessor = vec[index-1];
-        vec[index-1] = vec[size-1];
-        vec.Resize(size-1);
+        if(index==1)
+        {
+            return MinNRemove();
+        }
+
+        ulong i = 0;
+        Data dat;
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(i == index-2)
+            {
+                dat = newHead->next->data;        //prec
+                Node* curr = newHead->next->next; //curr 
+                newHead->next = curr;             //prec di prec
+                delete newHead->next;
+                break;
+            }
+            newHead = newHead->next;
+            i++;
+        }
+
         size--;
-        Sort();
         
-        return predecessor;
+        return dat;
     } 
 
     template<typename Data>
@@ -323,10 +296,28 @@ namespace lasd {
             throw std::length_error("Predecessor not found!");
         }
 
-        vec[index-1] = vec[size-1];
-        vec.Resize(size-1);
+        if(index==1)
+        {
+            RemoveMin()
+            return;
+        }
+        ulong i = 0;    
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(i == index-2)
+            {
+                Node* curr = newHead->next->next; //curr 
+                newHead->next = curr;             //prec di prec
+                delete newHead->next;
+                break;
+            }
+            newHead = newHead->next;
+            i++;
+        }
+
         size--;
-        Sort();
+        
         
     }  
 
@@ -383,13 +374,32 @@ namespace lasd {
             throw std::length_error("successor not found!");
         }
 
-        Data successor = vec[index+1];
-        vec[index+1] = vec[size-1];
-        vec.Resize(size-1);
+        if(index == size-2)
+        {
+            return MaxNRemove();
+        }
+
+        ulong i = 0;
+        Data dat;
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(i == index)
+            {
+                dat = newHead->next->data;        //succ
+                Node* curr = newHead->next->next; //curr 
+                newHead->next = curr;             //succ di succ
+                delete newHead->next;
+                break;
+            }
+            newHead = newHead->next;
+            i++;
+        }
+
+    
         size--;
-        Sort();
         
-        return successor;
+        return data;
     }  
 
     template<typename Data>
@@ -414,13 +424,33 @@ namespace lasd {
 
         if(index == size-1)
         {
-            throw std::length_error("Successor not found!");
+            throw std::length_error("successor not found!");
         }
 
-        vec[index+1] = vec[size-1];
-        vec.Resize(size-1);
+        if(index == size-2)
+        {
+            RemoveMax();
+            return;
+        }
+
+        ulong i = 0;
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(i == index)
+            {       
+                Node* curr = newHead->next->next; //curr 
+                newHead->next = curr;             //succ di succ
+                delete newHead->next;
+                break;
+            }
+            newHead = newHead->next;
+            i++;
+        }
+
+    
         size--;
-        Sort();
+        
     } 
 
     template<typename Data>
@@ -428,9 +458,34 @@ namespace lasd {
     {
         if(Exists(d)) return false;
         size++;
-        v.Resize(size);
-        v[size-1] = d;
-        Sort();
+
+        Node* node = new Node(data);
+
+        if(node->data < head->value)
+        {
+            node->next = head;
+            head = node;
+            return true;
+        }else if(node->data > tail->data)
+        {
+            tail->next = node;
+            tail = node;
+            return true;
+        }
+
+        Node* prec = nullptr;
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(node->data < newHead->data)
+            {       
+                prec->next = node;
+                node->next = newHead;
+            }
+            prec = newHead;
+            newHead = newHead->next;
+            i++;
+        }
 
         return true;
 
@@ -441,9 +496,34 @@ namespace lasd {
     {
         if(Exists(d)) return false;
         size++;
-        v.Resize(size);
-        v[size-1] = d;
-        Sort();
+
+        Node* node = new Node(data);
+
+        if(node->data < head->value)
+        {
+            node->next = head;
+            head = node;
+            return true;
+        }else if(node->data > tail->data)
+        {
+            tail->next = node;
+            tail = node;
+            return true;
+        }
+
+        Node* prec = nullptr;
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(node->data < newHead->data)
+            {       
+                prec->next = node;
+                node->next = newHead;
+            }
+            prec = newHead;
+            newHead = newHead->next;
+            i++;
+        }
 
         return true;
     }
@@ -467,11 +547,38 @@ namespace lasd {
         {
             return false;
         }
-        vec[index] = vec[size-1];
-        vec.Resize(size-1);
+        
+        
+        Node* node = GetNode(index);
+
+
+        if(node == head)
+        {
+            RemoveMin();
+            return true;
+        }else if(node == tail)
+        {
+            RemoveMax();
+            return true;    
+        }
+
+        Node* prec = nullptr;
+        Node* newHead = head;
+        while(newHead != nullptr)
+        {
+            if(node == newHead)
+            {       
+                prec->next = newHead->next;
+                delete newHead;
+                break;
+            }
+            prec = newHead;
+            newHead = newHead->next;
+            i++;
+        }
         size--;
-        Sort();
         return true;
+        
 
     }
 
@@ -521,39 +628,23 @@ namespace lasd {
         size = 0;
     }
 
-    template<typename Data>
-    void SetLst<Data>::Sort() noexcept 
-    {
-        QuickSort(0, size - 1);
-    }
 
     template<typename Data>
-    void SetLst<Data>::QuickSort(ulong p, ulong r) noexcept 
+    List<Data>::Node* SetLst<Data>::GetNode(const ulong index)
     {
-        if (p < r) 
+        ulong i = 0;
+        Node* newHead = head;
+        while(newHead != nullptr)
         {
-            ulong q = Partition(p, r);
-            QuickSort(p, q);
-            QuickSort(q + 1, r);
+            if(i == index)
+            {
+                return head->data;
+            }
+            newHead = newHead->next;
+            i++;
         }
-    }
 
-    template<typename Data>
-    ulong SetLst<Data>::Partition(ulong p, ulong r) noexcept 
-    {
-        Data x = this->operator[](p);
-        ulong i = p - 1;
-        ulong j = r + 1;
-        do 
-        {
-            do { j--; }
-            while (x < this->operator[](j));
-            do { i++; }
-            while (x > this->operator[](i));
-            if (i < j) { std::swap(this->operator[](i), this->operator[](j)); }
-        }
-        while (i < j);
-        return j;
+        return newHead;
     }
 
 }

@@ -119,6 +119,8 @@ protected:
    
   ulong Partition(ulong p, ulong r) noexcept;
 
+  List<Data>::Node* GetNode(const ulong index);
+
 };
 
 /* ************************************************************************** */
