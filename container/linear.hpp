@@ -21,7 +21,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
@@ -34,7 +33,7 @@ public:
   LinearContainer<Data>& operator=(const LinearContainer<Data>&) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  LinearContainer<Data>& operator=(LinearContaine<Data>r&&) = delete; // Move assignment of abstract types is not possible.
+  LinearContainer<Data>& operator=(LinearContainer<Data>&&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -85,7 +84,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
@@ -133,7 +131,7 @@ public:
 };
 
 template <typename Data>
-class SortableLinearContainer: virtual public MutableLinearContainer {
+class SortableLinearContainer: virtual public MutableLinearContainer<Data> {
 
 private:
 
@@ -141,7 +139,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 

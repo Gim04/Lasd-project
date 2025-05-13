@@ -21,8 +21,6 @@ private:
 
 protected:
 
-  // ...
-
 public:
 
   // Destructor

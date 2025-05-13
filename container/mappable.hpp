@@ -25,7 +25,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
@@ -59,7 +58,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class PreOrderMappableContainer: virtual public MappableContainer<Data>, virtual public PreOrderMappableContainer<Data> {
+class PreOrderMappableContainer: virtual public MappableContainer<Data>, virtual public PreOrderTraversableContainer<Data> {
 
 private:
 
@@ -67,7 +66,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
@@ -115,7 +113,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 

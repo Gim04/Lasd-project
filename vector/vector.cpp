@@ -74,7 +74,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    Vector<Data>&  Vector<Data>::operator=(Vector<Data>&&)
+    Vector<Data>&  Vector<Data>::operator=(Vector<Data>&& v)
     {
         std::swap(size, v.size);
         std::swap(buff, v.buff);
@@ -110,7 +110,7 @@ namespace lasd {
     {
         if(index<size)
         {
-            return buffer[index];
+            return buff[index];
         }
 
         throw std::out_of_range("Out of bound!");
@@ -124,7 +124,7 @@ namespace lasd {
             return buff[0];
         }
 
-        throw std::length_error("Empty vector!")
+        throw std::length_error("Empty vector!");
     }
   
     template <typename Data>
@@ -135,7 +135,7 @@ namespace lasd {
             return buff[size-1];
         }
 
-        throw std::length_error("Empty vector!")
+        throw std::length_error("Empty vector!");
     }
     
   
@@ -144,7 +144,7 @@ namespace lasd {
     {
         if(index<size)
         {
-            return buffer[index];
+            return buff[index];
         }
 
         throw std::out_of_range("Out of bound!");
@@ -158,7 +158,7 @@ namespace lasd {
             return buff[0];
         }
 
-        throw std::length_error("Empty vector!")
+        throw std::length_error("Empty vector!");
     }
   
     template <typename Data>
@@ -169,7 +169,7 @@ namespace lasd {
             return buff[size-1];
         }
 
-        throw std::length_error("Empty vector!")
+        throw std::length_error("Empty vector!");
     }
   
     template <typename Data>
@@ -210,7 +210,7 @@ namespace lasd {
     SortableVector<Data>::SortableVector(MappableContainer<Data>&& c): Vector<Data>(std::move(c)) {}
 
     template<typename Data>
-    SortableVector<Data>::SortableVector(const SortableVector<Data>& c): Vector<Data>(other) {}
+    SortableVector<Data>::SortableVector(const SortableVector<Data>& c): Vector<Data>(c) {}
 
     template<typename Data>
     SortableVector<Data>::SortableVector(SortableVector<Data>&& c): Vector<Data>(std::move(c)) {}

@@ -3,14 +3,14 @@
 namespace lasd {
 
     template<typename Data>
-    SetLst<Data>::SetLst(const TraversableContainer<Data>& c) : List(c)
+    SetLst<Data>::SetLst(const TraversableContainer<Data>& c) : List<Data>(c)
     {
        
         size = c.Size();
     } 
 
     template<typename Data>
-    SetLst<Data>::SetLst(MappableContainer<Data>&& c): List(c)
+    SetLst<Data>::SetLst(MappableContainer<Data>&& c): List<Data>(c)
     {
         size = c.Size();
     }

@@ -25,7 +25,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
@@ -79,7 +78,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
@@ -133,7 +131,6 @@ private:
 
 protected:
 
-  // ...
 
 public:
 
