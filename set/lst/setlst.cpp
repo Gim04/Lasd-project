@@ -22,7 +22,7 @@ namespace lasd {
         size = list.Size();
         for(ulong i = 0; i<size; i++)
         {
-            operator[](i) = list[i];
+            Insert(list[i]);
         }
     }
 
@@ -32,7 +32,7 @@ namespace lasd {
         size = list.Size();
         for(ulong i = 0; i<size; i++)
         {
-            operator[](i) = std::move(list[i]);
+            Insert(std::move(list[i]));
         }
     }
 
@@ -191,7 +191,7 @@ namespace lasd {
     } 
 
     template<typename Data>
-    Data SetLst<Data>::Predecessor(Data& d) const
+    Data SetLst<Data>::Predecessor(const Data& d) const
     {
         ulong index = 0;
         bool found = false;
@@ -220,7 +220,7 @@ namespace lasd {
     }
 
     template<typename Data>
-    Data SetLst<Data>::PredecessorNRemove(Data& d)
+    Data SetLst<Data>::PredecessorNRemove(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -272,7 +272,7 @@ namespace lasd {
     } 
 
     template<typename Data>
-    void SetLst<Data>::RemovePredecessor(Data& d)
+    void SetLst<Data>::RemovePredecessor(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -322,7 +322,7 @@ namespace lasd {
     }  
 
     template<typename Data>
-    Data SetLst<Data>::Successor(Data& d) const
+    Data SetLst<Data>::Successor(const Data& d) const
     {
         ulong index = 0;
         bool found = false;
@@ -350,7 +350,7 @@ namespace lasd {
     }
 
     template<typename Data>
-    Data SetLst<Data>::SuccessorNRemove(Data& d)
+    Data SetLst<Data>::SuccessorNRemove(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -403,7 +403,7 @@ namespace lasd {
     }  
 
     template<typename Data>
-    void SetLst<Data>::RemoveSuccessor(Data& d)
+    void SetLst<Data>::RemoveSuccessor(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -461,7 +461,7 @@ namespace lasd {
 
         Node* node = new Node(d);
 
-        if(node->data < this->head->value)
+        if(node->data < this->head->data)
         {
             node->next = this->head;
             this->head = node;
@@ -499,7 +499,7 @@ namespace lasd {
 
         Node* node = new Node(d);
 
-        if(node->data < this->head->value)
+        if(node->data < this->head->data)
         {
             node->next = this->head;
             this->head = node;
@@ -632,15 +632,15 @@ namespace lasd {
 
 
     template<typename Data>
-    Node* SetLst<Data>::GetNode(const ulong index)
+    typename SetLst<Data>::Node* SetLst<Data>::GetNode(const ulong index)
     {
         ulong i = 0;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index)
             {
-                return head->data;
+                return this->head;
             }
             newHead = newHead->next;
             i++;

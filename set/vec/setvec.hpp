@@ -77,13 +77,13 @@ public:
   Data MaxNRemove() override;  
   void RemoveMax()  override;  
 
-  Data Predecessor(Data& d) const override;   
-  Data PredecessorNRemove(Data& d) override;   
-  void RemovePredecessor(Data& d) override; 
+  Data Predecessor(const Data& d) const override;   
+  Data PredecessorNRemove(const Data& d) override;   
+  void RemovePredecessor(const Data& d) override; 
 
-  Data Successor(Data& d) const override;   
-  Data SuccessorNRemove(Data& d) override;   
-  void RemoveSuccessor(Data& d) override;   
+  Data Successor(const Data& d) const override;   
+  Data SuccessorNRemove(const Data& d) override;   
+  void RemoveSuccessor(const Data& d) override;   
 
   /* ************************************************************************ */
 
@@ -99,7 +99,13 @@ public:
 
   const Data& operator[](const ulong index) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
 
+  const Data& Front() const override; // Override LinearContainer member (must throw std::length_error when empty)
+
+  const Data& Back() const override; // Override LinearContainer member (must throw std::length_error when empty)
+
   /* ************************************************************************** */
+
+  void Resize(ulong size) override; // Override ResizableContainer member
 
   // Specific member function (inherited from TestableContainer)
 

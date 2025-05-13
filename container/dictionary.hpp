@@ -103,13 +103,13 @@ public:
   virtual Data MaxNRemove() = 0; // (concrete function must throw std::length_error when empty)
   virtual void RemoveMax() = 0 ; // (concrete function must throw std::length_error when empty)
 
-  virtual Data Predecessor(Data& d) const = 0; // (concrete function must throw std::length_error when not found)
-  virtual Data PredecessorNRemove(Data& d) = 0; // (concrete function must throw std::length_error when not found)
-  virtual void RemovePredecessor(Data& d) = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data Predecessor(const Data& d) const = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data PredecessorNRemove(const Data& d) = 0; // (concrete function must throw std::length_error when not found)
+  virtual void RemovePredecessor(const Data& d) = 0; // (concrete function must throw std::length_error when not found)
 
-  virtual Data Successor(Data& d) const = 0; // (concrete function must throw std::length_error when not found)
-  virtual Data SuccessorNRemove(Data& d) = 0; // (concrete function must throw std::length_error when not found)
-  virtual void RemoveSuccessor(Data& d) = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data Successor(const Data& d) const = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data SuccessorNRemove(const Data& d) = 0; // (concrete function must throw std::length_error when not found)
+  virtual void RemoveSuccessor(const Data& d) = 0; // (concrete function must throw std::length_error when not found)
 
 };
 

@@ -21,7 +21,7 @@ namespace lasd {
     template<typename Data>
     SetVec<Data>::SetVec(const SetVec<Data>& v) 
     {
-        size = SetVec.Size();
+        size = v.Size();
         for(ulong i = 0; i<size; i++)
         {
             vec[i] = v[i];
@@ -31,7 +31,7 @@ namespace lasd {
     template<typename Data>
     SetVec<Data>::SetVec(SetVec<Data>&& v)
     {
-        size = SetVec.Size();
+        size = v.Size();
         for(ulong i = 0; i<size; i++)
         {
             vec[i] = std::move(v[i]);
@@ -231,7 +231,7 @@ namespace lasd {
     } 
 
     template<typename Data>
-    Data SetVec<Data>::Predecessor(Data& d) const
+    Data SetVec<Data>::Predecessor(const Data& d) const
     {
         ulong index = 0;
         bool found = false;
@@ -260,7 +260,7 @@ namespace lasd {
     }
 
     template<typename Data>
-    Data SetVec<Data>::PredecessorNRemove(Data& d)
+    Data SetVec<Data>::PredecessorNRemove(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -294,7 +294,7 @@ namespace lasd {
     } 
 
     template<typename Data>
-    void SetVec<Data>::RemovePredecessor(Data& d)
+    void SetVec<Data>::RemovePredecessor(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -326,7 +326,7 @@ namespace lasd {
     }  
 
     template<typename Data>
-    Data SetVec<Data>::Successor(Data& d) const
+    Data SetVec<Data>::Successor(const Data& d) const
     {
         ulong index = 0;
         bool found = false;
@@ -354,7 +354,7 @@ namespace lasd {
     }
 
     template<typename Data>
-    Data SetVec<Data>::SuccessorNRemove(Data& d)
+    Data SetVec<Data>::SuccessorNRemove(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -388,7 +388,7 @@ namespace lasd {
     }  
 
     template<typename Data>
-    void SetVec<Data>::RemoveSuccessor(Data& d)
+    void SetVec<Data>::RemoveSuccessor(const Data& d)
     {
         ulong index = 0;
         bool found = false;
@@ -423,8 +423,8 @@ namespace lasd {
     {
         if(Exists(d)) return false;
         size++;
-        v.Resize(size);
-        v[size-1] = d;
+        vec.Resize(size);
+        vec[size-1] = d;
         Sort();
 
         return true;
@@ -436,8 +436,8 @@ namespace lasd {
     {
         if(Exists(d)) return false;
         size++;
-        v.Resize(size);
-        v[size-1] = d;
+        vec.Resize(size);
+        vec[size-1] = d;
         Sort();
 
         return true;
@@ -479,7 +479,7 @@ namespace lasd {
             throw std::out_of_range("Out of bound!");
         }
 
-        return vector[index];
+        return vec[index];
     }
 
 
@@ -490,12 +490,29 @@ namespace lasd {
         {
             if(vec[i]== d)
             {
-                return true
+                return true;
             }
         }
         return false;
     }
 
+    template<typename Data>
+    const Data& SetVec<Data>::Front() const
+    {
+        vec.Front();
+    }   
+
+    template<typename Data>
+    const Data& SetVec<Data>::Back() const 
+    {
+        vec.Back();
+    }
+
+    template<typename Data>
+    void SetVec<Data>::Resize(ulong size) 
+    {
+        vec.Resize(size);
+    }
 
     template<typename Data>
     inline void SetVec<Data>::Clear() 
@@ -524,19 +541,19 @@ namespace lasd {
     template<typename Data>
     ulong SetVec<Data>::Partition(ulong p, ulong r) noexcept 
     {
-        Data x = this->operator[](p);
+        Data x = vec[p];
         ulong i = p - 1;
         ulong j = r + 1;
         do 
         {
             do { j--; }
-            while (x < this->operator[](j));
+            while (x < vec[j]);
             do { i++; }
-            while (x > this->operator[](i));
-            if (i < j) { std::swap(this->operator[](i), this->operator[](j)); }
+            while (x > vec[i]);
+            if (i < j) { std::swap(vec[i], vec[j]); }
         }
         while (i < j);
-        return j;
+            return j;
     }
 
 }

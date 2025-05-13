@@ -79,13 +79,13 @@ public:
   Data MaxNRemove() override;  
   void RemoveMax()  override;  
 
-  Data Predecessor(Data& d) const override;   
-  Data PredecessorNRemove(Data& d) override;   
-  void RemovePredecessor(Data& d) override; 
+  Data Predecessor(const Data& d) const override;   
+  Data PredecessorNRemove(const Data& d) override;   
+  void RemovePredecessor(const Data& d) override; 
 
-  Data Successor(Data& d) const override;   
-  Data SuccessorNRemove(Data& d) override;   
-  void RemoveSuccessor(Data& d) override;   
+  Data Successor(const Data& d) const override;   
+  Data SuccessorNRemove(const Data& d) override;   
+  void RemoveSuccessor(const Data& d) override;   
 
   /* ************************************************************************ */
 
@@ -121,7 +121,7 @@ protected:
    
   ulong Partition(ulong p, ulong r) noexcept;
 
-  List<Data>::Node* GetNode(const ulong index);
+  Node* GetNode(const ulong index);
 
 };
 
