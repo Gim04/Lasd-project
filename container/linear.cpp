@@ -39,10 +39,13 @@ namespace lasd {
     template <typename Data>
     void LinearContainer<Data>::PostOrderTraverse(TraverseFun x) const 
     {
-        for(ulong i = this->size-1; i>=0; i--)
-        {
-            x(operator[](i));
-        }
+      if (this->size == 0) {
+        return; 
+      }
+
+      for (ulong i = this->size; i-- > 0;) {
+          x(operator[](i));
+      }
     }
 
     template <typename Data>

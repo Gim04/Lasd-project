@@ -147,6 +147,10 @@ namespace lasd {
     template <typename Data>
     void List<Data>::RemoveFromFront()
     {
+        if(size == 0)
+        {
+            throw std::length_error("Empty!");
+        }
         Node * newHead = head->next;
         delete head;
         head = newHead;
@@ -156,6 +160,11 @@ namespace lasd {
     template <typename Data>
     Data List<Data>::FrontNRemove()
     {
+        if(size == 0)
+        {
+            throw std::length_error("Empty!");
+        }
+
         Data data = head->data;
         Node * newHead = head->next;
         delete head;
@@ -178,6 +187,11 @@ namespace lasd {
         {
             tail = newTail;
         }
+        if(head == nullptr)
+        {
+            head = tail;
+        }
+      
     }
 
     template <typename Data>
@@ -192,6 +206,10 @@ namespace lasd {
         }else
         {
             tail = newTail;
+        }
+        if(head == nullptr)
+        {
+            head = tail;
         }
     } 
 
@@ -239,6 +257,12 @@ namespace lasd {
     template <typename Data>
     Data& List<Data>::operator[](ulong index)
     {
+
+        if(size == 0)
+        {
+            throw std::out_of_range("Size exdeed!");
+        }
+
         if(index>= size)
         {
             throw std::out_of_range("Size exdeed!");
@@ -260,12 +284,20 @@ namespace lasd {
     template <typename Data>
     Data& List<Data>::Front()
     {
+        if(size == 0)
+        {
+            throw std::length_error("Empty list!");
+        }
         return this->head->data;
     }
 
     template <typename Data>
     Data& List<Data>::Back()
     {
+        if(size == 0)
+        {
+            throw std::length_error("Empty list!");
+        }
         return this->tail->data;
     }
 
@@ -292,13 +324,21 @@ namespace lasd {
 
     template <typename Data>
     const Data& List<Data>::Front() const
-    {
+    {   
+        if(size == 0)
+        {
+            throw std::length_error("Empty list!");
+        }
         return this->head->data;
     }
 
     template <typename Data>
     const Data& List<Data>::Back() const
     {
+        if(size == 0)
+        {
+            throw std::length_error("Empty list!");
+        }
         return this->tail->data;
     } 
  

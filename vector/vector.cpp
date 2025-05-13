@@ -180,8 +180,10 @@ namespace lasd {
             Clear();
         }else
         {
+            ulong newSize = (this->size < size) ? this->size : size; 
+
             Data* newbuff = new Data[size];
-            for(ulong i = 0; i<size; i++)
+            for(ulong i = 0; i<newSize; i++)
             {
                 newbuff[i] = buff[i];
             }
