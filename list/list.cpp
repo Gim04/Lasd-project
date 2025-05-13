@@ -304,39 +304,39 @@ namespace lasd {
  
 
     template <typename Data>
-    void List<Data>::Map(MapFun& x) const
+    void List<Data>::Map(MapFun x) 
     {
         PreOrderMap(x, head);
     }
 
  
     template <typename Data>
-    void List<Data>::PreOrderMap(MapFun& x) const 
+    void List<Data>::PreOrderMap(MapFun x)  
     {
         PreOrderMap(x, head);
     }
 
  
     template <typename Data>
-    void List<Data>::PostOrderMap(MapFun& x) const
+    void List<Data>::PostOrderMap(MapFun x) 
     {
         PostOrderMap(x, head);
     }
 
     template <typename Data>
-    void List<Data>::Traverse(TraverseFun& x) const
+    void List<Data>::Traverse(TraverseFun x) const
     {
         PreOrderTraverse(x, head);
     }
 
     template <typename Data>
-    void List<Data>::PreOrderTraverse(TraverseFun& x) const 
+    void List<Data>::PreOrderTraverse(TraverseFun x) const 
     {
         PreOrderTraverse(x, head);
     }
 
     template <typename Data>
-    void List<Data>::PostOrderTraverse(TraverseFun& x) const
+    void List<Data>::PostOrderTraverse(TraverseFun x) const
     {
         PostOrderTraverse(x, head);
     }

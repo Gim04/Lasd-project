@@ -22,13 +22,13 @@ namespace lasd {
 
 
     template <typename Data>
-    void LinearContainer<Data>::Traverse(TraverseFun& x) const
+    void LinearContainer<Data>::Traverse(TraverseFun x) const
     {
         PreOrderTraverse(x);
     }
 
     template <typename Data>
-    void LinearContainer<Data>::PreOrderTraverse(TraverseFun& x) const 
+    void LinearContainer<Data>::PreOrderTraverse(TraverseFun x) const 
     {
         for(ulong i = 0; i<this->size; i++)
         {
@@ -37,7 +37,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    void LinearContainer<Data>::PostOrderTraverse(TraverseFun& x) const 
+    void LinearContainer<Data>::PostOrderTraverse(TraverseFun x) const 
     {
         for(ulong i = this->size-1; i>=0; i--)
         {
@@ -46,13 +46,13 @@ namespace lasd {
     }
 
     template <typename Data>
-    void MutableLinearContainer<Data>::Map(MapFun& x) const 
+    void MutableLinearContainer<Data>::Map(MapFun x)  
     {
         PreOrderMap(x);
     } 
 
     template <typename Data>
-    void MutableLinearContainer<Data>::PreOrderMap(MapFun& x) const
+    void MutableLinearContainer<Data>::PreOrderMap(MapFun x) 
     {
         for(ulong i = 0; i<this->size; i++)
         {
@@ -62,7 +62,7 @@ namespace lasd {
 
   
     template <typename Data>
-    void MutableLinearContainer<Data>::PostOrderMap(MapFun& x) const
+    void MutableLinearContainer<Data>::PostOrderMap(MapFun x) 
     {
         for(ulong i = this->size-1; i>=0; i--)
         {

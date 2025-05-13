@@ -24,7 +24,7 @@ protected:
 
   using Container::size;
 
-  using List<Data>::node;
+  using typename List<Data>::Node;
 
   // ...
 

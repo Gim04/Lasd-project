@@ -19,7 +19,7 @@ namespace lasd {
     template<typename Data>
     SetLst<Data>::SetLst(const SetLst<Data>& list) 
     {
-        size = SetLst.Size();
+        size = list.Size();
         for(ulong i = 0; i<size; i++)
         {
             operator[](i) = list[i];
@@ -29,7 +29,7 @@ namespace lasd {
     template<typename Data>
     SetLst<Data>::SetLst(SetLst<Data>&& list)
     {
-        size = SetLst.Size();
+        size = list.Size();
         for(ulong i = 0; i<size; i++)
         {
             operator[](i) = std::move(list[i]);
@@ -47,14 +47,14 @@ namespace lasd {
     template<typename Data>
     SetLst<Data>& SetLst<Data>::operator=(const SetLst<Data>& lista)
     {
-        iif(*this != lista)
+        if(*this != lista)
         {
             Clear();
 
             if(lista.tail != nullptr)
             {
-                tail = new Node(*lista.tail);
-                head = lista.head->Clone(tail);
+                this->tail = new Node(*lista.tail);
+                this->head = lista.head->Clone(this->tail);
                 size = lista.size;
             }
         }
@@ -64,8 +64,8 @@ namespace lasd {
     template<typename Data>
     SetLst<Data>& SetLst<Data>::operator=(SetLst<Data>&& n)
     {
-        std::swap(tail, n.tail);
-        std::swap(head, n.head);
+        std::swap(this->tail, n.tail);
+        std::swap(this->head, n.head);
         std::swap(size, n.size);
 
         return *this;
@@ -75,9 +75,9 @@ namespace lasd {
     template<typename Data>
     bool SetLst<Data>::operator==(const SetLst<Data>& list) const noexcept
     {
-        if(size == n.size)
+        if(size == list.size)
         {
-            if(head == n.head)
+            if(this->head == list.head)
             {
                 return true;
             }
@@ -99,7 +99,7 @@ namespace lasd {
         {
             throw std::length_error("Empty List!");
         }
-        return head->data;
+        return this->head->data;
     }
 
     template<typename Data>
@@ -110,11 +110,11 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        Data min = head->data;
-        Node* newHead = head->next;
-        delete head;
+        Data min = this->head->data;
+        Node* newHead = this->head->next;
+        delete this->head;
         size--;
-        head = newHead;
+        this->head = newHead;
 
         return min;
 
@@ -128,10 +128,10 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        Node* newHead = head->next;
-        delete head;
+        Node* newHead = this->head->next;
+        delete this->head;
         size--;
-        head = newHead;
+        this->head = newHead;
 
     }
 
@@ -143,7 +143,7 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        return tail->data;
+        return this->tail->data;
 
     }  
 
@@ -155,17 +155,17 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        Node* newTail = head;
-        while(newHead->next != tail)
+        Node* newTail = this->head;
+        while(newTail->next != this->tail)
         {
-            newTail = newHead->next;
+            newTail = newTail->next;
         }
 
-        Data max = tail->data;
+        Data max = this->tail->data;
         newTail->next = nullptr;
-        delete tail;
+        delete this->tail;
         size--;
-        tail = newTail;
+        this->tail = newTail;
 
         return max;
     }  
@@ -178,16 +178,16 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        Node* newTail = head;
-        while(newHead->next != tail)
+        Node* newTail = this->head;
+        while(newTail->next != this->tail)
         {
-            newTail = newHead->next;
+            newTail = newTail->next;
         }
         
         newTail->next = nullptr;
-        delete tail;
+        delete this->tail;
         size--;
-        tail = newTail;
+        this->tail = newTail;
     } 
 
     template<typename Data>
@@ -227,7 +227,7 @@ namespace lasd {
 
         for(ulong i = 0; i<size; i++)
         {
-            if(vec[i] == d)
+            if(operator[](i) == d)
             {
                 index = i;
                 found = true;
@@ -251,7 +251,7 @@ namespace lasd {
 
         ulong i = 0;
         Data dat;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index-2)
@@ -279,7 +279,7 @@ namespace lasd {
 
         for(ulong i = 0; i<size; i++)
         {
-            if(vec[i] == d)
+            if(operator[](i) == d)
             {
                 index = i;
                 found = true;
@@ -298,11 +298,11 @@ namespace lasd {
 
         if(index==1)
         {
-            RemoveMin()
+            RemoveMin();
             return;
         }
         ulong i = 0;    
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index-2)
@@ -357,7 +357,7 @@ namespace lasd {
 
         for(ulong i = 0; i<size; i++)
         {
-            if(vec[i] == d)
+            if(operator[](i) == d)
             {
                 index = i;
                 found = true;
@@ -381,7 +381,7 @@ namespace lasd {
 
         ulong i = 0;
         Data dat;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index)
@@ -399,7 +399,7 @@ namespace lasd {
     
         size--;
         
-        return data;
+        return dat;
     }  
 
     template<typename Data>
@@ -410,7 +410,7 @@ namespace lasd {
 
         for(ulong i = 0; i<size; i++)
         {
-            if(vec[i] == d)
+            if(operator[](i) == d)
             {
                 index = i;
                 found = true;
@@ -434,7 +434,7 @@ namespace lasd {
         }
 
         ulong i = 0;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index)
@@ -459,22 +459,22 @@ namespace lasd {
         if(Exists(d)) return false;
         size++;
 
-        Node* node = new Node(data);
+        Node* node = new Node(d);
 
-        if(node->data < head->value)
+        if(node->data < this->head->value)
         {
-            node->next = head;
-            head = node;
+            node->next = this->head;
+            this->head = node;
             return true;
-        }else if(node->data > tail->data)
+        }else if(node->data > this->tail->data)
         {
-            tail->next = node;
-            tail = node;
+            this->tail->next = node;
+            this->tail = node;
             return true;
         }
-
+        ulong i =0;
         Node* prec = nullptr;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(node->data < newHead->data)
@@ -497,22 +497,23 @@ namespace lasd {
         if(Exists(d)) return false;
         size++;
 
-        Node* node = new Node(data);
+        Node* node = new Node(d);
 
-        if(node->data < head->value)
+        if(node->data < this->head->value)
         {
-            node->next = head;
-            head = node;
+            node->next = this->head;
+            this->head = node;
             return true;
-        }else if(node->data > tail->data)
+        }else if(node->data > this->tail->data)
         {
-            tail->next = node;
-            tail = node;
+            this->tail->next = node;
+            this->tail = node;
             return true;
         }
 
         Node* prec = nullptr;
-        Node* newHead = head;
+        Node* newHead = this->head;
+        ulong i =0;
         while(newHead != nullptr)
         {
             if(node->data < newHead->data)
@@ -536,7 +537,7 @@ namespace lasd {
 
         for(ulong i = 0; i<size; i++)
         {
-            if(vec[i] == d)
+            if(operator[](i) == d)
             {
                 index = i;
                 found = true;
@@ -552,18 +553,19 @@ namespace lasd {
         Node* node = GetNode(index);
 
 
-        if(node == head)
+        if(node == this->head)
         {
             RemoveMin();
             return true;
-        }else if(node == tail)
+        }else if(node == this->tail)
         {
             RemoveMax();
             return true;    
         }
 
+        ulong i =0;
         Node* prec = nullptr;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(node == newHead)
@@ -592,12 +594,12 @@ namespace lasd {
         }
 
         ulong i = 0;
-        Node* newHead = head;
+        Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index)
             {
-                return head->data;
+                return this->head->data;
             }
             newHead = newHead->next;
             i++;
@@ -612,7 +614,7 @@ namespace lasd {
         {
             if(operator[](i)== d)
             {
-                return true
+                return true;
             }
         }
         return false;
@@ -622,15 +624,15 @@ namespace lasd {
     template<typename Data>
     inline void SetLst<Data>::Clear() 
     {
-        delete head;
-        head = nullptr;
-        tail = nullptr;
+        delete this->head;
+        this->head = nullptr;
+        this->tail = nullptr;
         size = 0;
     }
 
 
     template<typename Data>
-    List<Data>::Node* SetLst<Data>::GetNode(const ulong index)
+    Node* SetLst<Data>::GetNode(const ulong index)
     {
         ulong i = 0;
         Node* newHead = head;

@@ -151,19 +151,19 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-  void Map(MapFun& x) const override; // Override MappableContainer member
+  void Map(MapFun x) override; // Override MappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderMappableContainer)
 
-  void PreOrderMap(MapFun& x) const override; // Override PreOrderMappableContainer member
+  void PreOrderMap(MapFun x) override; // Override PreOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderMappableContainer)
 
-  void PostOrderMap(MapFun& x) const override; // Override PostOrderMappableContainer member
+  void PostOrderMap(MapFun x) override; // Override PostOrderMappableContainer member
 
   /* ************************************************************************ */
 
@@ -171,19 +171,19 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  void Traverse(TraverseFun& x) const override; // Override TraversableContainer member
+  void Traverse(TraverseFun x) const override; // Override TraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderTraversableContainer)
 
-  void PreOrderTraverse(TraverseFun& x) const override; // Override PreOrderTraversableContainer member
+  void PreOrderTraverse(TraverseFun x) const override; // Override PreOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderTraversableContainer)
 
-  void PostOrderTraverse(TraverseFun& x) const override; // Override PostOrderTraversableContainer member
+  void PostOrderTraverse(TraverseFun x) const override; // Override PostOrderTraversableContainer member
 
   /* ************************************************************************ */
 

@@ -7,7 +7,7 @@ namespace lasd {
     {
         bool ret = true;
         c.Traverse(
-            [this, &](const Data& d)
+            [&](const Data& d)
             {
                 ret &= Insert(d);
             }
@@ -21,7 +21,7 @@ namespace lasd {
     {
         bool ret = true;
         c.Map(
-            [this, &](Data& d)
+            [&](Data& d)
             {
                 ret &= Insert(d);
             }
@@ -35,7 +35,7 @@ namespace lasd {
     {
         bool ret = true;
         c.Traverse(
-            [this, &](const Data& d)
+            [&](const Data& d)
             {
                 ret &= Remove(d);
             }
@@ -49,7 +49,7 @@ namespace lasd {
     {
         bool ret = false;
         c.Traverse(
-            [this, &](const Data& d)
+            [&](const Data& d)
             {
                 ret |= Insert(d);
             }
@@ -63,7 +63,7 @@ namespace lasd {
     {
         bool ret = false;
         c.Map(
-            [this, &](Data& d)
+            [&](Data& d)
             {
                 ret |= Insert(d);
             }
@@ -77,7 +77,7 @@ namespace lasd {
     {
         bool ret = false;
         c.Traverse(
-            [this, &](const Data& d)
+            [&](const Data& d)
             {
                 ret |= Remove(d);
             }

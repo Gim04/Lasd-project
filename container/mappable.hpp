@@ -51,7 +51,7 @@ public:
 
   using MapFun = std::function<void(Data &)>;
 
-  virtual void Map(MapFun& x) const = 0;
+  virtual void Map(MapFun x) = 0;
 
 };
 
@@ -92,13 +92,13 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-  virtual void PreOrderMap(MapFun& x) const = 0;
+  virtual void PreOrderMap(MapFun x) = 0;
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)
 
-  void Map(MapFun& x) const override; // Override MappableContainer member
+  void Map(MapFun x) override; // Override MappableContainer member
 
 };
 
@@ -139,13 +139,13 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-  virtual void PostOrderMap(MapFun& x) const = 0;
+  virtual void PostOrderMap(MapFun x) = 0;
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)
 
-  void Map(MapFun& x) const override; // Override MappableContainer member
+  void Map(MapFun x) override; // Override MappableContainer member
 
 };
 

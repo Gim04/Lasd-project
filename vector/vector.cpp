@@ -11,11 +11,11 @@ namespace lasd {
     template <typename Data>
     Vector<Data>::Vector(const TraversableContainer<Data>& c)
     {
-        this->size = c.size();
+        this->size = c.Size();
         buff = new Data[size];
         
         ulong i = 0;
-        Traverse(
+        c.Traverse(
             [&](const Data& d)
             {
                 buff[i] = d;
@@ -27,11 +27,11 @@ namespace lasd {
     template <typename Data>
     Vector<Data>::Vector(MappableContainer<Data>&& c)
     {
-        this->size = c.size();
+        this->size = c.Size();
         buff = new Data[size];
         
         ulong i = 0;
-        Map(
+        c.Map(
             [&](const Data& d)
             {
                 buff[i] = d;
