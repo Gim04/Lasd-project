@@ -150,7 +150,17 @@ namespace lasd {
         {
             throw std::length_error("Empty!");
         }
+
+        if(size==1)
+        {
+            head->next = nullptr;
+            delete head;
+            head = nullptr;
+            size--;
+            return;
+        }
         Node * newHead = head->next;
+        head->next = nullptr;
         delete head;
         head = newHead;
         size--;
@@ -163,9 +173,19 @@ namespace lasd {
         {
             throw std::length_error("Empty!");
         }
+        if(size==1)
+        {
+            Data data = head->data;
+            head->next = nullptr;
+            delete head;
+            head = nullptr;
+            size--;
+            return data;
+        }
 
         Data data = head->data;
         Node * newHead = head->next;
+        head->next = nullptr;
         delete head;
         head = newHead;
         size--;
