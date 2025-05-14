@@ -64,18 +64,17 @@ namespace lasd {
     template<typename Data>
     List<Data>::List (List<Data>&& node)
     {
-        if(node.tail != nullptr)
-        {
-            std::swap(tail, node.tail);
-            std::swap(head, node.head);
-            std::swap(size, node.size);
-        }
+        
+        std::swap(tail, node.tail);
+        std::swap(head, node.head);
+        std::swap(size, node.size);
+    
     }
 
     template<typename Data>
     List<Data>& List<Data>::operator=(const List<Data>& lista)
     {
-        if(*this != lista)
+        if(this != &lista)
         {
             Clear();
 
@@ -182,7 +181,6 @@ namespace lasd {
         {
             tail->next = newTail;
             tail = newTail;
-            size++;
         }else
         {
             tail = newTail;
@@ -191,6 +189,8 @@ namespace lasd {
         {
             head = tail;
         }
+
+        size++;
       
     }
 
@@ -202,7 +202,6 @@ namespace lasd {
         {
             tail->next = newTail;
             tail = newTail;
-            size++;
         }else
         {
             tail = newTail;
@@ -211,6 +210,8 @@ namespace lasd {
         {
             head = tail;
         }
+
+        size++;
     } 
 
     template <typename Data>
@@ -274,7 +275,7 @@ namespace lasd {
         {
             if(i == index)
             {
-                return head->data;
+                return newHead->data;
             }
             newHead = newHead->next;
             i++;
@@ -304,6 +305,11 @@ namespace lasd {
     template <typename Data>
     const Data& List<Data>::operator[](const ulong index) const  
     {
+
+        if(size == 0)
+        {
+            throw std::out_of_range("Size exdeed!");
+        }
         if(index>= size)
         {
             throw std::out_of_range("Size exdeed!");
@@ -315,7 +321,7 @@ namespace lasd {
         {
             if(i == index)
             {
-                return head->data;
+                return newHead->data;
             }
             newHead = newHead->next;
             i++;
@@ -406,7 +412,7 @@ namespace lasd {
     {
         if(n != nullptr)
         {
-            PreOrderTraverse(x, n->next);
+            PostOrderTraverse(x, n->next);
             x(n->data);
         }
     }
@@ -426,7 +432,7 @@ namespace lasd {
     {
         if(n != nullptr)
         {
-            PreOrderMap(x, n->next);
+            PostOrderMap(x, n->next);
             x(n->data);
         }
     }
