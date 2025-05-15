@@ -14,9 +14,6 @@ void InsertAtFront(uint & testnum, uint & testerr, lasd::List<Data> & lst, bool 
     std::cout << " " << testnum << " (" << testerr << ") Insert at the front of the list the value \"" << val << "\": ";
     lst.InsertAtFront(val);
     std::cout << ((tst = chk) ? "Correct" : "Error") << "!" << std::endl;
-    lst.PreOrderMap([](const Data& data){
-      std::cout<<"Data:"<<data<<std::endl;
-    });
   }
   catch (std::exception & exc) {
     std::cout << "\"" << exc.what() << "\": " << ((tst = !chk) ? "Correct" : "Error") << "!" << std::endl;
@@ -69,9 +66,6 @@ void InsertAtBack(uint & testnum, uint & testerr, lasd::List<Data> & lst, bool c
     std::cout << " " << testnum << " (" << testerr << ") Insert at the back of the list the value \"" << val << "\": ";
     lst.InsertAtBack(val);
     std::cout << ((tst = chk) ? "Correct" : "Error") << "!" << std::endl;
-    lst.PreOrderMap([](const Data& data){
-      std::cout<<"Data:"<<data<<std::endl;
-    });
   }
   catch (std::exception & exc) {
     std::cout << "\"" << exc.what() << "\": " << ((tst = !chk) ? "Correct" : "Error") << "!" << std::endl;

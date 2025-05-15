@@ -22,7 +22,7 @@ namespace lasd {
         {
             InsertAtBack(d);
         };
-        Traverse(
+        x.Traverse(
             lambda
         );
     }
@@ -34,7 +34,7 @@ namespace lasd {
         {
             InsertAtBack(d);
         };
-        Map(
+        x.Map(
             lambda
         );
     }
@@ -68,6 +68,10 @@ namespace lasd {
         std::swap(tail, node.tail);
         std::swap(head, node.head);
         std::swap(size, node.size);
+
+        node.tail = nullptr;
+        node.head = nullptr;
+        node.size = 0;
     
     }
 
@@ -101,14 +105,21 @@ namespace lasd {
     template<typename Data>
     bool List<Data>::operator==(const List<Data>& n) const noexcept
     {
-        if(size == n.size)
+        if(size != n.size)
+            return false;
+
+        Node* newHead = head;
+        Node* newHeadN = n.head;
+
+        while(newHead != nullptr && newHeadN != nullptr)
         {
-            if(head == n.head)
-            {
-                return true;
-            }
+            if(newHead->data != newHeadN->data)
+                return false;
+            newHead = newHead->next;
+            newHeadN = newHeadN->next;
         }
-        return false;
+
+        return (newHead == nullptr && newHeadN == nullptr);
     }
 
     template<typename Data>
@@ -411,6 +422,7 @@ namespace lasd {
     template <typename Data>
     inline void List<Data>::Clear() 
     {
+        delete head;
         head = nullptr;
         tail = nullptr;
         size = 0;
@@ -419,7 +431,7 @@ namespace lasd {
     template <typename Data>
     void List<Data>::PreOrderTraverse(TraverseFun x, const Node* n) const
     {
-        if(n != nullptr)
+        while(n != nullptr)
         {
             x(n->data);
             n = n->next;
@@ -440,7 +452,7 @@ namespace lasd {
     template <typename Data>
     void List<Data>::PreOrderMap(MapFun x, Node* n) const 
     {
-        if(n != nullptr)
+        while(n != nullptr)
         {
             x(n->data);
             n = n->next;

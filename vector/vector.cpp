@@ -55,6 +55,9 @@ namespace lasd {
     {
         std::swap(size, v.size);
         std::swap(buff, v.buff);
+
+        v.size = 0;
+        v.buff = nullptr;
     }
 
     template <typename Data>
@@ -66,9 +69,8 @@ namespace lasd {
     template <typename Data>
     Vector<Data>& Vector<Data>::operator=(const Vector<Data>& v)
     {
-        Vector<Data>* tmp = new Vector<Data>(v);
-        std::swap(*tmp, *this);
-        delete tmp;
+        Vector<Data>* vector = new Vector<Data>(v);
+        std::swap(*vector, *this);
         return *this;
 
     }
@@ -119,7 +121,7 @@ namespace lasd {
     template <typename Data>
     Data& Vector<Data>::Front()
     {
-        if(buff != nullptr)
+        if(size == 0)
         {
             return buff[0];
         }
@@ -130,7 +132,7 @@ namespace lasd {
     template <typename Data>
     Data& Vector<Data>::Back()
     {
-        if(buff != nullptr)
+        if(size == 0)
         {
             return buff[size-1];
         }
@@ -185,7 +187,7 @@ namespace lasd {
             Data* newbuff = new Data[size];
             for(ulong i = 0; i<newSize; i++)
             {
-                newbuff[i] = buff[i];
+                newbuff[i] = std::move(buff[i]);
             }
             delete[] buff;
             buff = newbuff;
