@@ -7,12 +7,15 @@ namespace lasd {
     {
        
         size = c.Size();
+        Sort();
+
     } 
 
     template<typename Data>
     SetLst<Data>::SetLst(MappableContainer<Data>&& c): List<Data>(c)
     {
         size = c.Size();
+        Sort();
     }
 
 
@@ -110,8 +113,17 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
+        if(size == 1)
+        {
+           Data min = this->tail->data;
+           delete this->tail;
+           size--;
+           return min;
+        }
+
         Data min = this->head->data;
         Node* newHead = this->head->next;
+        this->head->next = nullptr;
         delete this->head;
         size--;
         this->head = newHead;
@@ -128,7 +140,15 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
+        if(size == 1)
+        {
+           delete this->tail;
+           size--;
+           return;
+        }
+
         Node* newHead = this->head->next;
+        this->head->next = nullptr;
         delete this->head;
         size--;
         this->head = newHead;
@@ -155,6 +175,14 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
+        if(size == 1)
+        {
+           Data max = this->tail->data;
+           delete this->tail;
+           size--;
+           return max;
+        }
+
         Node* newTail = this->head;
         while(newTail->next != this->tail)
         {
@@ -176,6 +204,13 @@ namespace lasd {
         if(size == 0)
         {
             throw std::length_error("Empty List!");
+        }
+
+        if(size == 1)
+        {
+           delete this->tail;
+           size--;
+           return;
         }
 
         Node* newTail = this->head;
@@ -456,75 +491,73 @@ namespace lasd {
     template<typename Data>
     bool SetLst<Data>::Insert(const Data& d)
     {
-        if(Exists(d)) return false;
+       if (Exists(d)) return false;
         size++;
 
-        Node* node = new Node(d);
+        Node* node = new typename List<Data>::Node(d);
 
-        if(node->data < this->head->data)
-        {
+        if (this->head == nullptr) {
+            this->head = this->tail = node;
+            return true;
+        }
+
+        if (d < this->head->data) {
             node->next = this->head;
             this->head = node;
             return true;
-        }else if(node->data > this->tail->data)
-        {
+        }
+        if (d > this->tail->data) {
             this->tail->next = node;
             this->tail = node;
             return true;
         }
-        ulong i =0;
-        Node* prec = nullptr;
-        Node* newHead = this->head;
-        while(newHead != nullptr)
-        {
-            if(node->data < newHead->data)
-            {       
-                prec->next = node;
-                node->next = newHead;
-            }
-            prec = newHead;
-            newHead = newHead->next;
-            i++;
+        Node* current = this->head->next;
+        Node* prec = this->head;
+
+        while (current != nullptr && d > current->data) {
+            prec = current;
+            current = current->next;
         }
 
-        return true;
+        node->next = current;
+        prec->next = node;
 
+        return true;
     }
 
     template<typename Data>
     bool SetLst<Data>::Insert(Data&& d) 
     {
-        if(Exists(d)) return false;
+        if (Exists(d)) return false;
         size++;
 
-        Node* node = new Node(d);
+        Node* node = new typename List<Data>::Node(d);
 
-        if(node->data < this->head->data)
-        {
+        if (this->head == nullptr) {
+            this->head = this->tail = node;
+            return true;
+        }
+
+        if (d < this->head->data) {
             node->next = this->head;
             this->head = node;
             return true;
-        }else if(node->data > this->tail->data)
-        {
+        }
+        if (d > this->tail->data) {
             this->tail->next = node;
             this->tail = node;
             return true;
         }
+        Node* current = this->head->next;
+        Node* prec = this->head;
 
-        Node* prec = nullptr;
-        Node* newHead = this->head;
-        ulong i =0;
-        while(newHead != nullptr)
-        {
-            if(node->data < newHead->data)
-            {       
-                prec->next = node;
-                node->next = newHead;
-            }
-            prec = newHead;
-            newHead = newHead->next;
-            i++;
+        while (current != nullptr && d > current->data) {
+            prec = current;
+            current = current->next;
         }
+
+        node->next = current;
+        prec->next = node;
 
         return true;
     }
@@ -634,19 +667,78 @@ namespace lasd {
     template<typename Data>
     typename SetLst<Data>::Node* SetLst<Data>::GetNode(const ulong index)
     {
+        if(index >= size)
+        {
+            throw std::out_of_range("Out of range!");
+        }
         ulong i = 0;
         Node* newHead = this->head;
         while(newHead != nullptr)
         {
             if(i == index)
             {
-                return this->head;
+                return newHead;
             }
             newHead = newHead->next;
             i++;
         }
 
-        return newHead;
+        return nullptr;
+    }
+
+    template<typename Data>
+    void SetLst<Data>::Sort() noexcept 
+    {
+        QuickSort(0, size - 1);
+    }
+
+    template<typename Data>
+    void SetLst<Data>::QuickSort(ulong p, ulong r) noexcept 
+    {
+        if (p < r) 
+        {
+            ulong q = Partition(p, r);
+            QuickSort(p, q);
+            QuickSort(q + 1, r);
+        }
+    }
+
+    template<typename Data>
+    ulong SetLst<Data>::Partition(ulong p, ulong r) noexcept 
+    {
+        Node* pivotNode = this->head;
+        for (ulong k = 0; k < p; ++k) 
+        {
+            pivotNode = pivotNode->next;
+        }
+        Data x = pivotNode->data;
+
+        ulong i = p - 1;
+        ulong j = r + 1;
+
+        while (true) 
+        {
+
+            do 
+            {
+                j--;
+            } while (x < GetNode(j)->data);
+
+            do 
+            {
+                i++;
+            } while (x > GetNode(i)->data);
+
+            if (i < j) 
+            {
+                Node* nodeI = GetNode(i);
+                Node* nodeJ = GetNode(j);
+                std::swap(nodeI->data, nodeJ->data);
+            } else 
+            {
+                return j;
+            }
+        }
     }
 
 }
