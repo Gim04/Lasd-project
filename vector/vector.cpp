@@ -9,11 +9,8 @@ namespace lasd {
     }
 
     template <typename Data>
-    Vector<Data>::Vector(const TraversableContainer<Data>& c)
+    Vector<Data>::Vector(const TraversableContainer<Data>& c) : Vector(c.Size())
     {
-        this->size = c.Size();
-        buff = new Data[size];
-        
         ulong i = 0;
         c.Traverse(
             [&](const Data& d)
@@ -25,16 +22,14 @@ namespace lasd {
     } 
 
     template <typename Data>
-    Vector<Data>::Vector(MappableContainer<Data>&& c)
+    Vector<Data>::Vector(MappableContainer<Data>&& c) : Vector(c.Size())
     {
-        this->size = c.Size();
-        buff = new Data[size];
-        
+    
         ulong i = 0;
         c.Map(
-            [&](const Data& d)
+            [&](Data& d)
             {
-                buff[i] = d;
+                buff[i] = std::move(d);
                 i++;
             }
         );
@@ -56,8 +51,6 @@ namespace lasd {
         std::swap(size, v.size);
         std::swap(buff, v.buff);
 
-        v.size = 0;
-        v.buff = nullptr;
     }
 
     template <typename Data>
@@ -71,6 +64,7 @@ namespace lasd {
     {
         Vector<Data>* vector = new Vector<Data>(v);
         std::swap(*vector, *this);
+        delete vector;
         return *this;
 
     }
@@ -121,7 +115,7 @@ namespace lasd {
     template <typename Data>
     Data& Vector<Data>::Front()
     {
-        if(size == 0)
+        if(buff != nullptr)
         {
             return buff[0];
         }
@@ -132,7 +126,7 @@ namespace lasd {
     template <typename Data>
     Data& Vector<Data>::Back()
     {
-        if(size == 0)
+        if(buff != nullptr)
         {
             return buff[size-1];
         }
@@ -177,21 +171,20 @@ namespace lasd {
     template <typename Data>
     void Vector<Data>::Resize(ulong size) 
     {
-        if(size == 0)
+        if (size == 0) 
         {
             Clear();
-        }else
+        } else if (this->size != size) 
         {
-            ulong newSize = (this->size < size) ? this->size : size; 
-
-            Data* newbuff = new Data[size];
-            for(ulong i = 0; i<newSize; i++)
+            Data * tmp = new Data[size] {};
+            ulong minsize = (this->size < size) ? this->size : size;
+            for (ulong index = 0; index < minsize; ++index) 
             {
-                newbuff[i] = std::move(buff[i]);
+                std::swap(buff[index], tmp[index]);
             }
-            delete[] buff;
-            buff = newbuff;
+            std::swap(buff, tmp);
             this->size = size;
+            delete[] tmp;
         }
     }
   

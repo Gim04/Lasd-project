@@ -18,24 +18,22 @@ namespace lasd {
     template <typename Data>
     List<Data>::List(const TraversableContainer<Data>& x)
     {
-        TraverseFun lambda = [&](const Data& d)
+        x.Traverse(
+        [&](const Data& d)
         {
             InsertAtBack(d);
-        };
-        x.Traverse(
-            lambda
+        }
         );
     }
 
     template <typename Data>
     List<Data>::List(MappableContainer<Data>&& x)
     {
-        MapFun lambda = [&](const Data& d)
-        {
-            InsertAtBack(d);
-        };
         x.Map(
-            lambda
+        [&](Data& d)
+        {
+            InsertAtBack(std::move(d));
+        }
         );
     }
 
@@ -69,10 +67,6 @@ namespace lasd {
         std::swap(head, node.head);
         std::swap(size, node.size);
 
-        node.tail = nullptr;
-        node.head = nullptr;
-        node.size = 0;
-    
     }
 
     template<typename Data>

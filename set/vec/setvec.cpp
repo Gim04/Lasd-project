@@ -7,6 +7,7 @@ namespace lasd {
     {
         vec = Vector<Data>(c);
         size = vec.Size();
+        Sort();
     } 
 
     template<typename Data>
@@ -14,6 +15,7 @@ namespace lasd {
     {
         vec = Vector<Data>(c);
         size = vec.Size();
+        Sort();
     }
 
     /* ************************************************************************ */
@@ -128,6 +130,8 @@ namespace lasd {
         vec[index] = vec[size-1]; //swap with the element that must be removed
         vec.Resize(size-1); 
 
+        size--;
+
         Sort();
 
         return min;
@@ -155,6 +159,7 @@ namespace lasd {
 
         vec[index] = vec[size-1]; //swap
         vec.Resize(size-1);
+        size--;
         Sort();
 
     }
@@ -201,6 +206,7 @@ namespace lasd {
 
         vec[index] = vec[size-1];//swap
         vec.Resize(size-1);
+        size--;
         Sort();
 
         return max;
@@ -227,195 +233,144 @@ namespace lasd {
 
         vec[index] = vec[size-1];//swap
         vec.Resize(size-1);
+        size--;
         Sort();
     } 
 
     template<typename Data>
     Data SetVec<Data>::Predecessor(const Data& d) const
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(vec[i] == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == 0)
+        
+        if(size == 0)
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        return vec[index-1];
+        for(ulong i = size-1; i>=0; i--)
+        {
+            if(vec[i] < d)
+            {
+               return vec[i];
+            }
+        }
+        throw std::length_error("Predecessor not found!");
 
     }
 
     template<typename Data>
     Data SetVec<Data>::PredecessorNRemove(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(vec[i] == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == 0)
+        if(size == 0)
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        Data predecessor = vec[index-1];
-        vec[index-1] = vec[size-1];
-        vec.Resize(size-1);
-        size--;
-        Sort();
-        
-        return predecessor;
+        for(ulong i = size-1; i>=0; i--)
+        {
+            if(vec[i] < d)
+            {
+                Data predecessor = vec[i];
+                vec[i] = vec[size-1];
+                vec.Resize(size-1);
+                size--;
+                Sort();
+            
+                return predecessor;
+            }
+        }
+        throw std::length_error("Predecessor not found!");
+
     } 
 
     template<typename Data>
     void SetVec<Data>::RemovePredecessor(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(vec[i] == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == 0)
+        if(size == 0)
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        vec[index-1] = vec[size-1];
-        vec.Resize(size-1);
-        size--;
-        Sort();
+        for(ulong i = size-1; i>=0; i--)
+        {
+            if(vec[i] < d)
+            {
+                vec[i] = vec[size-1];
+                vec.Resize(size-1);
+                size--;
+                Sort();
+        
+            }
+        }
+        throw std::length_error("Predecessor not found!");
+
         
     }  
 
     template<typename Data>
     Data SetVec<Data>::Successor(const Data& d) const
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(vec[i] == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == size-1)
+       
+        if(size == 0)
         {
             throw std::length_error("Successor not found!");
         }
 
-        return vec[index+1];
+        for(ulong i = 0; i<size; i++)
+        {
+            if(vec[i] > d)
+            {
+                return vec[i];
+            }
+        }
+        throw std::length_error("Successor not found!");
+    
     }
 
     template<typename Data>
     Data SetVec<Data>::SuccessorNRemove(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
+        if(size == 0)
+        {
+            throw std::length_error("Successor not found!");
+        }
 
         for(ulong i = 0; i<size; i++)
         {
-            if(vec[i] == d)
+            if(vec[i] > d)
             {
-                index = i;
-                found = true;
-                break;
+                Data successor = vec[i];
+                vec[i] = vec[size-1];
+                vec.Resize(size-1);
+                size--;
+                Sort();
+        
+                return successor;
             }
         }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == size-1)
-        {
-            throw std::length_error("successor not found!");
-        }
-
-        Data successor = vec[index+1];
-        vec[index+1] = vec[size-1];
-        vec.Resize(size-1);
-        size--;
-        Sort();
-        
-        return successor;
+        throw std::length_error("Successor not found!");
+    
     }  
 
     template<typename Data>
     void SetVec<Data>::RemoveSuccessor(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(vec[i] == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == size-1)
+        if(size == 0)
         {
             throw std::length_error("Successor not found!");
         }
 
-        vec[index+1] = vec[size-1];
-        vec.Resize(size-1);
-        size--;
-        Sort();
+        for(ulong i = 0; i<size; i++)
+        {
+            if(vec[i] > d)
+            {
+                vec[i] = vec[size-1];
+                vec.Resize(size-1);
+                size--;
+                Sort();
+            }
+        }
+        throw std::length_error("Successor not found!");
+    
     } 
 
     template<typename Data>
