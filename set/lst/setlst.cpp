@@ -113,21 +113,8 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        if(size == 1)
-        {
-           Data min = this->tail->data;
-           delete this->tail;
-           size--;
-           return min;
-        }
-
         Data min = this->head->data;
-        Node* newHead = this->head->next;
-        this->head->next = nullptr;
-        delete this->head;
-        size--;
-        this->head = newHead;
-
+        RemoveMin();
         return min;
 
     }
@@ -142,16 +129,19 @@ namespace lasd {
 
         if(size == 1)
         {
-           delete this->tail;
-           size--;
-           return;
+            this->head->next = nullptr;
+            delete this->head;
+            this->head = nullptr;
+            this->tail = nullptr;
+            size--;
+            return;
         }
 
         Node* newHead = this->head->next;
         this->head->next = nullptr;
         delete this->head;
-        size--;
         this->head = newHead;
+        size--;
 
     }
 
@@ -175,25 +165,8 @@ namespace lasd {
             throw std::length_error("Empty List!");
         }
 
-        if(size == 1)
-        {
-           Data max = this->tail->data;
-           delete this->tail;
-           size--;
-           return max;
-        }
-
-        Node* newTail = this->head;
-        while(newTail->next != this->tail)
-        {
-            newTail = newTail->next;
-        }
-
         Data max = this->tail->data;
-        newTail->next = nullptr;
-        delete this->tail;
-        size--;
-        this->tail = newTail;
+        RemoveMax();
 
         return max;
     }  
@@ -207,10 +180,13 @@ namespace lasd {
         }
 
         if(size == 1)
-        {
-           delete this->tail;
-           size--;
-           return;
+        { 
+            this->tail->next = nullptr;
+            delete this->tail;
+            this->head = nullptr;
+            this->tail = nullptr;
+            size--;
+            return;
         }
 
         Node* newTail = this->head;
@@ -219,272 +195,213 @@ namespace lasd {
             newTail = newTail->next;
         }
         
-        newTail->next = nullptr;
+        this->tail->next = nullptr;
         delete this->tail;
-        size--;
+        newTail->next = nullptr;
         this->tail = newTail;
+        size--;
     } 
 
     template<typename Data>
     Data SetLst<Data>::Predecessor(const Data& d) const
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == 0)
+        if(size == 0)
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        return operator[](index-1);
+        for(ulong i = size-1; i>=0; i--)
+        {
+            if(operator[](i) < d)
+            {
+               return operator[](i);
+            }
+        }
+        throw std::length_error("Predecessor not found!");
 
+     
     }
 
     template<typename Data>
     Data SetLst<Data>::PredecessorNRemove(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == 0)
+        if(size == 0)
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        if(index==1)
+        if(size == 1)
         {
-            return MinNRemove();
+            throw std::length_error("Predecessor not found!");
         }
-
-        ulong i = 0;
-        Data dat;
-        Node* newHead = this->head;
-        while(newHead != nullptr)
-        {
-            if(i == index-2)
-            {
-                dat = newHead->next->data;        //prec
-                Node* curr = newHead->next->next; //curr 
-                newHead->next = curr;             //prec di prec
-                delete newHead->next;
-                break;
-            }
-            newHead = newHead->next;
-            i++;
-        }
-
-        size--;
         
-        return dat;
+        
+        for(ulong i = size-1; i>=0; i--)
+        {
+            if(operator[](i) < d)
+            {
+                Node* precN = GetNode(i);
+                Node* precPrec = GetNode(i-1);
+                Data prec = precN->data;
+                precPrec->next = precN->next;
+                precN->next = nullptr;
+                delete precN;
+                size--;
+                Sort();
+            
+                return prec;
+            }
+        }
+        throw std::length_error("Predecessor not found!");
+
     } 
 
     template<typename Data>
     void SetLst<Data>::RemovePredecessor(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == 0)
+        if(size == 0)
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        if(index==1)
+        if(size == 1)
         {
-            RemoveMin();
-            return;
+            throw std::length_error("Predecessor not found!");
         }
-        ulong i = 0;    
-        Node* newHead = this->head;
-        while(newHead != nullptr)
+        
+        
+        for(ulong i = size-1; i>=0; i--)
         {
-            if(i == index-2)
+            if(operator[](i) < d)
             {
-                Node* curr = newHead->next->next; //curr 
-                newHead->next = curr;             //prec di prec
-                delete newHead->next;
-                break;
+                Node* prec = GetNode(i);
+                Node* precPrec = GetNode(i-1);
+                precPrec->next = prec->next;
+                prec->next = nullptr;
+                delete prec;
+                size--;
+                Sort();
+                return;
             }
-            newHead = newHead->next;
-            i++;
         }
+        throw std::length_error("Predecessor not found!");
 
-        size--;
-        
-        
     }  
 
     template<typename Data>
     Data SetLst<Data>::Successor(const Data& d) const
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
-        }
-
-        if(index == size-1)
+        if(size == 0)
         {
             throw std::length_error("Successor not found!");
         }
 
-        return operator[](index+1);
+        for(ulong i = 0; i<size; i++)
+        {
+            if(operator[](i) > d)
+            {
+                return operator[](i);
+            }
+        }
+        throw std::length_error("Successor not found!");
     }
 
     template<typename Data>
     Data SetLst<Data>::SuccessorNRemove(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
+        if(size == 0)
         {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
+            throw std::length_error("Successor not found!");
         }
 
-        if(index == size-1)
-        {
-            throw std::length_error("successor not found!");
-        }
-
-        if(index == size-2)
-        {
-            return MaxNRemove();
-        }
-
-        ulong i = 0;
-        Data dat;
         Node* newHead = this->head;
+        Node* prec = nullptr;
+
         while(newHead != nullptr)
         {
-            if(i == index)
+            if(d < newHead->data)
             {
-                dat = newHead->next->data;        //succ
-                Node* curr = newHead->next->next; //curr 
-                newHead->next = curr;             //succ di succ
-                delete newHead->next;
-                break;
+                if(newHead == this->tail)
+                {
+                    prec->next = nullptr;
+                    Data succ = this->tail->data;
+                    delete this->tail;
+                    this->tail = prec; 
+                    return succ;
+                }else if(newHead == this->head)
+                {
+                    Data succ = this->head->data;
+                    Node* oldHead = this->head;
+                    this->head = this->head->next;
+                    oldHead->next = nullptr;
+                    delete oldHead;
+                    size--;
+                    Sort();
+                    return succ;
+                }else
+                {
+                    Data succ = newHead->data;
+                    prec->next = newHead->next;
+                    newHead->next = nullptr;
+                    delete newHead;
+                    size--;
+                    Sort();
+                    return succ;
+                }
             }
+            prec = newHead;
             newHead = newHead->next;
-            i++;
         }
 
-    
-        size--;
-        
-        return dat;
+        throw std::length_error("Successor not found!");
+
     }  
 
     template<typename Data>
     void SetLst<Data>::RemoveSuccessor(const Data& d)
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
+       if(size == 0)
         {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            throw std::length_error("Value not found!");
+            throw std::length_error("Successor not found!");
         }
 
-        if(index == size-1)
-        {
-            throw std::length_error("successor not found!");
-        }
-
-        if(index == size-2)
-        {
-            RemoveMax();
-            return;
-        }
-
-        ulong i = 0;
         Node* newHead = this->head;
+        Node* prec = nullptr;
+
         while(newHead != nullptr)
         {
-            if(i == index)
-            {       
-                Node* curr = newHead->next->next; //curr 
-                newHead->next = curr;             //succ di succ
-                delete newHead->next;
-                break;
+            if(d < newHead->data)
+            {
+                if(newHead == this->tail)
+                {
+                    prec->next = nullptr;
+                    delete this->tail;
+                    this->tail = prec; 
+                    return;
+                }else if(newHead == this->head)
+                {
+                    Node* oldHead = this->head;
+                    this->head = this->head->next;
+                    oldHead->next = nullptr;
+                    delete oldHead;
+                    size--;
+                    Sort();
+                    return;
+                }else
+                {
+                    prec->next = newHead->next;
+                    newHead->next = nullptr;
+                    delete newHead;
+                    size--;
+                    Sort();
+                    return;
+                }
             }
+            prec = newHead;
             newHead = newHead->next;
-            i++;
         }
 
-    
-        size--;
+        throw std::length_error("Successor not found!");
         
     } 
 
@@ -604,6 +521,7 @@ namespace lasd {
             if(node == newHead)
             {       
                 prec->next = newHead->next;
+                newHead->next = nullptr;
                 delete newHead;
                 break;
             }
@@ -632,7 +550,7 @@ namespace lasd {
         {
             if(i == index)
             {
-                return this->head->data;
+                return newHead->data;
             }
             newHead = newHead->next;
             i++;
@@ -643,7 +561,7 @@ namespace lasd {
     template<typename Data>
     bool SetLst<Data>::Exists(const Data& d) const noexcept 
     {
-        for(ulong i = 0; i<size; i++)
+        for(ulong i = 0; i<this->size; i++)
         {
             if(operator[](i)== d)
             {
