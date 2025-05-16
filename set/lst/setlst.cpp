@@ -12,7 +12,7 @@ namespace lasd {
     } 
 
     template<typename Data>
-    SetLst<Data>::SetLst(MappableContainer<Data>&& c): List<Data>(c)
+    SetLst<Data>::SetLst(MappableContainer<Data>&& c): List<Data>(std::move(c))
     {
         size = c.Size();
         Sort();

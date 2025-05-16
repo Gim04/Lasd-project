@@ -13,7 +13,7 @@ namespace lasd {
     template<typename Data>
     SetVec<Data>::SetVec(MappableContainer<Data>&& c)
     {
-        vec = Vector<Data>(c);
+        vec = Vector<Data>(std::move(c));
         size = vec.Size();
         Sort();
     }
@@ -21,7 +21,7 @@ namespace lasd {
     /* ************************************************************************ */
 
     template<typename Data>
-    SetVec<Data>::SetVec(const SetVec<Data>& v) 
+    SetVec<Data>::SetVec(const SetVec<Data>& v) : vec(size)
     {
         size = v.Size();
         for(ulong i = 0; i<size; i++)
@@ -31,13 +31,10 @@ namespace lasd {
     }
 
     template<typename Data>
-    SetVec<Data>::SetVec(SetVec<Data>&& v)
+    SetVec<Data>::SetVec(SetVec<Data>&& v) : vec(std::move(v.vec))
     {
         size = v.Size();
-        for(ulong i = 0; i<size; i++)
-        {
-            vec[i] = std::move(v[i]);
-        }
+        v.size = 0;
     }
 
     template<typename Data>

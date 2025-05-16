@@ -51,6 +51,8 @@ namespace lasd {
         std::swap(size, v.size);
         std::swap(buff, v.buff);
 
+        v.buff = nullptr;
+        v.size = 0;
     }
 
     template <typename Data>
@@ -62,10 +64,13 @@ namespace lasd {
     template <typename Data>
     Vector<Data>& Vector<Data>::operator=(const Vector<Data>& v)
     {
+        if(this != v)
+        {
         Vector<Data>* vector = new Vector<Data>(v);
         std::swap(*vector, *this);
         delete vector;
         return *this;
+        }
 
     }
 
