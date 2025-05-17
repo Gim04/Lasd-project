@@ -108,6 +108,12 @@ public:
 
   virtual Data& Back() = 0; // (mutable version; concrete function must throw std::length_error when empty)
 
+  virtual const Data& operator[](const ulong index) const = 0; // (non-mutable version; concrete function must throw std::out_of_range when out of range)
+
+  virtual const Data& Front() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+
+  virtual const Data& Back() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)

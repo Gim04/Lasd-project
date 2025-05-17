@@ -22,21 +22,23 @@ namespace lasd {
     template<typename Data>
     SetLst<Data>::SetLst(const SetLst<Data>& list) 
     {
-        size = list.Size();
-        for(ulong i = 0; i<size; i++)
+        for(ulong i = 0; i<list.size; i++)
         {
             Insert(list[i]);
         }
+        size = list.Size();
     }
 
     template<typename Data>
     SetLst<Data>::SetLst(SetLst<Data>&& list)
     {
-        size = list.Size();
-        for(ulong i = 0; i<size; i++)
-        {
-            Insert(std::move(list[i]));
-        }
+        this->head = list.head;
+        this->tail = list.tail;
+        this->size = list.size;
+
+        list.head = nullptr;
+        list.tail = nullptr;
+        list.size = 0;
     }
 
     template<typename Data>
@@ -50,17 +52,16 @@ namespace lasd {
     template<typename Data>
     SetLst<Data>& SetLst<Data>::operator=(const SetLst<Data>& lista)
     {
-        if(*this != lista)
-        {
-            Clear();
+        
+        Clear();
 
-            if(lista.tail != nullptr)
-            {
-                this->tail = new Node(*lista.tail);
-                this->head = lista.head->Clone(this->tail);
-                size = lista.size;
-            }
+        if(lista.tail != nullptr)
+        {
+            this->tail = new List<Data>::Node(*lista.tail);
+            this->head = lista.head->Clone(this->tail);
+            size = lista.size;
         }
+            
         return *this;
     }
 
@@ -78,14 +79,21 @@ namespace lasd {
     template<typename Data>
     bool SetLst<Data>::operator==(const SetLst<Data>& list) const noexcept
     {
-        if(size == list.size)
+       if(size != list.size)
+            return false;
+
+        Node* current = this->head;
+        Node* currentOther = list.head;
+
+        while(current != nullptr && currentOther != nullptr)
         {
-            if(this->head == list.head)
-            {
-                return true;
-            }
+            if(current->data != currentOther->data)
+                return false;
+            current = current->next;
+            currentOther = currentOther->next;
         }
-        return false;
+
+        return (current == nullptr && currentOther == nullptr);
     }
 
     template<typename Data>
@@ -251,6 +259,10 @@ namespace lasd {
             
                 return prec;
             }
+            if(i==0)
+            {
+                break;
+            }
         }
         throw std::length_error("Predecessor not found!");
 
@@ -259,32 +271,48 @@ namespace lasd {
     template<typename Data>
     void SetLst<Data>::RemovePredecessor(const Data& d)
     {
-        if(size == 0)
+        if (size < 2) 
         {
             throw std::length_error("Predecessor not found!");
         }
 
-        if(size == 1)
+        
+        if (!(operator[](0) < d)) 
         {
             throw std::length_error("Predecessor not found!");
         }
-        
-        
-        for(ulong i = size-1; i>=0; i--)
+
+        ulong i = 1;
+        while (i < size && !(operator[](i) >= d)) 
         {
-            if(operator[](i) < d)
-            {
-                Node* prec = GetNode(i);
-                Node* precPrec = GetNode(i-1);
-                precPrec->next = prec->next;
-                prec->next = nullptr;
-                delete prec;
-                size--;
-                Sort();
-                return;
-            }
+            i++;
         }
-        throw std::length_error("Predecessor not found!");
+
+        // i è la posizione del primo >= value
+        ulong indexToRemove = i - 1;
+
+        // Rimozione nodo in posizione indexToRemove
+        if (indexToRemove == 0) 
+        {
+            // Rimuovi testa
+            Node* toDelete = this->head;
+            this->head = this->head->next;
+            toDelete->next = nullptr;
+            delete toDelete;
+        } else 
+        {
+            Node* prev = GetNode(indexToRemove - 1);
+            Node* toDelete = prev->next;
+            prev->next = toDelete->next;
+            if (toDelete == this->tail)     
+            {
+                this->tail = prev;
+            }
+            toDelete->next = nullptr;
+            delete toDelete;
+        }
+
+        size--;
 
     }  
 
@@ -327,6 +355,8 @@ namespace lasd {
                     Data succ = this->tail->data;
                     delete this->tail;
                     this->tail = prec; 
+                    size--;
+                    Sort();
                     return succ;
                 }else if(newHead == this->head)
                 {
@@ -376,7 +406,9 @@ namespace lasd {
                 {
                     prec->next = nullptr;
                     delete this->tail;
-                    this->tail = prec; 
+                    this->tail = prec;
+                    size--;
+                    Sort();
                     return;
                 }else if(newHead == this->head)
                 {
@@ -439,6 +471,11 @@ namespace lasd {
         node->next = current;
         prec->next = node;
 
+        if(current == nullptr)
+        {
+            this->tail = node;
+        }
+
         return true;
     }
 
@@ -476,62 +513,55 @@ namespace lasd {
         node->next = current;
         prec->next = node;
 
+        if(current == nullptr)
+        {
+            this->tail = node;
+        }
+
         return true;
     }
 
     template<typename Data>
     bool SetLst<Data>::Remove(const Data& d) 
     {
-        ulong index = 0;
-        bool found = false;
-
-        for(ulong i = 0; i<size; i++)
-        {
-            if(operator[](i) == d)
-            {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
+        if (this->head == nullptr) // Lista vuota
         {
             return false;
         }
-        
-        
-        Node* node = GetNode(index);
 
+        Node* current = this->head;
+        Node* prev = nullptr;
 
-        if(node == this->head)
-        {
-            RemoveMin();
-            return true;
-        }else if(node == this->tail)
-        {
-            RemoveMax();
-            return true;    
+        // Scorri la lista finché trovi un nodo >= value
+        while (current != nullptr && current->data < d) {
+            prev = current;
+            current = current->next;
         }
 
-        ulong i =0;
-        Node* prec = nullptr;
-        Node* newHead = this->head;
-        while(newHead != nullptr)
-        {
-            if(node == newHead)
-            {       
-                prec->next = newHead->next;
-                newHead->next = nullptr;
-                delete newHead;
-                break;
-            }
-            prec = newHead;
-            newHead = newHead->next;
-            i++;
+        // Se non trovato o non corrisponde al valore esatto
+        if (current == nullptr || current->data != d)
+            return false;
+
+        // Caso 1: nodo da rimuovere è la testa
+        if (current == this->head) {
+            this->head = this->head->next;
+            if (this->tail == current)
+                this->tail = nullptr;
         }
-        size--;
+        // Caso 2: nodo da rimuovere è la coda
+        else if (current == this->tail) {
+            this->tail = prev;
+            prev->next = nullptr;
+        }
+        // Caso 3: nodo in mezzo
+        else {
+            prev->next = current->next;
+        }
+
+        current->next = nullptr;
+        delete current;
+        --size;
         return true;
-        
 
     }
 
@@ -550,17 +580,20 @@ namespace lasd {
         {
             if(i == index)
             {
-                return newHead->data;
+                break;
             }
             newHead = newHead->next;
             i++;
         }
+
+        return newHead->data;
     }
 
 
     template<typename Data>
     bool SetLst<Data>::Exists(const Data& d) const noexcept 
     {
+        if(size == 0) return false;
         for(ulong i = 0; i<this->size; i++)
         {
             if(operator[](i)== d)
@@ -578,7 +611,7 @@ namespace lasd {
         delete this->head;
         this->head = nullptr;
         this->tail = nullptr;
-        size = 0;
+        this->size = 0;
     }
 
 

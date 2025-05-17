@@ -21,7 +21,7 @@ namespace lasd {
     /* ************************************************************************ */
 
     template<typename Data>
-    SetVec<Data>::SetVec(const SetVec<Data>& v) : vec(size)
+    SetVec<Data>::SetVec(const SetVec<Data>& v) : vec(v.size)
     {
         size = v.Size();
         for(ulong i = 0; i<size; i++)
@@ -249,6 +249,7 @@ namespace lasd {
             {
                return vec[i];
             }
+            
         }
         throw std::length_error("Predecessor not found!");
 
@@ -274,6 +275,10 @@ namespace lasd {
             
                 return predecessor;
             }
+            if(i==0)
+            {
+                break;
+            }
         }
         throw std::length_error("Predecessor not found!");
 
@@ -295,7 +300,13 @@ namespace lasd {
                 vec.Resize(size-1);
                 size--;
                 Sort();
+
+                return;
         
+            }
+            if(i==0)
+            {
+                break;
             }
         }
         throw std::length_error("Predecessor not found!");
@@ -438,6 +449,7 @@ namespace lasd {
     template<typename Data>
     bool SetVec<Data>::Exists(const Data& d) const noexcept 
     {
+        if(size == 0) return false;
         for(ulong i = 0; i<size; i++)
         {
             if(vec[i]== d)
@@ -451,13 +463,13 @@ namespace lasd {
     template<typename Data>
     const Data& SetVec<Data>::Front() const
     {
-        vec.Front();
+        return vec.Front();
     }   
 
     template<typename Data>
     const Data& SetVec<Data>::Back() const 
     {
-        vec.Back();
+        return vec.Back();
     }
 
     template<typename Data>

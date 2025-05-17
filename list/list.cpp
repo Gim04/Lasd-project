@@ -27,6 +27,12 @@ namespace lasd {
     }
 
     template <typename Data>
+    List<Data>::Node::Node(Data&& d)
+    {
+        std::swap(data, d);
+    }
+
+    template <typename Data>
     List<Data>::List(MappableContainer<Data>&& x)
     {
         x.Map(
@@ -67,6 +73,12 @@ namespace lasd {
         std::swap(head, node.head);
         std::swap(size, node.size);
 
+    }
+
+    template<typename Data>
+    List<Data>::~List()
+    {
+        delete head;
     }
 
     template<typename Data>
@@ -300,11 +312,13 @@ namespace lasd {
         {
             if(i == index)
             {
-                return newHead->data;
+               break;
             }
             newHead = newHead->next;
             i++;
         }
+
+        return newHead->data;
     }
 
     template <typename Data>
@@ -346,11 +360,13 @@ namespace lasd {
         {
             if(i == index)
             {
-                return newHead->data;
+                break;
             }
             newHead = newHead->next;
             i++;
         }
+
+        return newHead->data;
     }
 
     template <typename Data>

@@ -37,20 +37,16 @@ namespace lasd {
 
 
     template <typename Data>
-    Vector<Data>::Vector (const Vector<Data>& v)
+    Vector<Data>::Vector (const Vector<Data>& v) : Vector(v.size)
     {
-        size = v.size;
-        buff = new Data[size];
         std::copy(v.buff, v.buff + size, buff);
 
     }
 
     template <typename Data>
-    Vector<Data>::Vector (Vector<Data>&& v)
+    Vector<Data>::Vector (Vector<Data>&& v) : buff(v.buff)
     {
-        std::swap(size, v.size);
-        std::swap(buff, v.buff);
-
+        size = v.size;
         v.buff = nullptr;
         v.size = 0;
     }
@@ -64,14 +60,10 @@ namespace lasd {
     template <typename Data>
     Vector<Data>& Vector<Data>::operator=(const Vector<Data>& v)
     {
-        if(this != v)
-        {
         Vector<Data>* vector = new Vector<Data>(v);
         std::swap(*vector, *this);
         delete vector;
         return *this;
-        }
-
     }
 
     template <typename Data>
@@ -109,68 +101,48 @@ namespace lasd {
     template <typename Data>
     Data& Vector<Data>::operator[](ulong index)
     {
-        if(index<size)
-        {
-            return buff[index];
-        }
+        if(index >= size)
+            throw std::out_of_range("Out of bounds (Vector)");
 
-        throw std::out_of_range("Out of bound!");
+        return buff[index];
     }
 
     template <typename Data>
     Data& Vector<Data>::Front()
     {
-        if(buff != nullptr)
-        {
-            return buff[0];
-        }
-
-        throw std::length_error("Empty vector!");
+        if(buff == nullptr) throw std::length_error("Empty vector!");
+        return buff[0];
     }
   
     template <typename Data>
     Data& Vector<Data>::Back()
     {
-        if(buff != nullptr)
-        {
-            return buff[size-1];
-        }
-
-        throw std::length_error("Empty vector!");
+        if(buff == nullptr) throw std::length_error("Empty vector!");
+        return buff[size-1];
     }
     
   
     template <typename Data>
     const Data& Vector<Data>::operator[](const ulong index) const
     {
-        if(index<size)
-        {
-            return buff[index];
-        }
+        if(index >= size)
+            throw std::out_of_range("Out of bounds (Vector)");
 
-        throw std::out_of_range("Out of bound!");
+        return buff[index];
     }
   
     template <typename Data>
     const Data& Vector<Data>::Front() const
     {
-        if(buff != nullptr)
-        {
-            return buff[0];
-        }
-
-        throw std::length_error("Empty vector!");
+        if(buff == nullptr) throw std::length_error("Empty vector!");
+        return buff[0];
     }
   
     template <typename Data>
     const Data& Vector<Data>::Back() const
     {
-        if(buff != nullptr)
-        {
-            return buff[size-1];
-        }
-
-        throw std::length_error("Empty vector!");
+        if(buff == nullptr) throw std::length_error("Empty vector!");
+        return buff[size-1];
     }
   
     template <typename Data>
