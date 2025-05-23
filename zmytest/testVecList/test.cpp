@@ -22,7 +22,7 @@ void mytestVectorInt(uint & testnum, uint & testerr) {
   uint loctestnum = 0, loctesterr = 0;
   cout << endl << "Begin of Vector<int> Test:" << endl;
   try {
-    {
+    {//caso 0
       lasd::SortableVector<int> vec;
       lasd::SortableVector<int> vec2;
       Empty(loctestnum, loctesterr, vec, true);
@@ -45,7 +45,29 @@ void mytestVectorInt(uint & testnum, uint & testerr) {
       Size(loctestnum, loctesterr, vec2, true, 0);
 
     }
-    {
+    {//caso 1
+       lasd::SortableVector<int> vec(1);
+      lasd::SortableVector<int> vec2;
+      Empty(loctestnum, loctesterr, vec, false);
+      Size(loctestnum, loctesterr, vec, true, 1);
+
+      SetAt(loctestnum, loctesterr, vec, true, 0, 1);
+
+      GetFront(loctestnum, loctesterr, vec, true, 1);
+      GetBack(loctestnum, loctesterr, vec, true, 1);
+
+      Exists(loctestnum, loctesterr, vec, true, 1);
+
+      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+      TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 1);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 1);
+
+      EqualVector(loctestnum, loctesterr, vec, vec2, false);
+      Size(loctestnum, loctesterr, vec2, true, 0);
+    }
+    {//caso n
       lasd::SortableVector<int> vec(5);
       lasd::SortableVector<int> vec2(3);
       Empty(loctestnum, loctesterr, vec, false);
@@ -60,6 +82,9 @@ void mytestVectorInt(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
       TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
 
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 30);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 30);
+
       GetFront(loctestnum, loctesterr, vec, true, 4);
       GetBack(loctestnum, loctesterr, vec, true, 2);
 
@@ -67,6 +92,9 @@ void mytestVectorInt(uint & testnum, uint & testerr) {
 
       TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
       TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 30);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 30);
 
       GetFront(loctestnum, loctesterr, vec, true, 1);
       GetBack(loctestnum, loctesterr, vec, true, 16);
@@ -77,6 +105,9 @@ void mytestVectorInt(uint & testnum, uint & testerr) {
 
       TraversePreOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<int>);
       TraversePostOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<int>);
+
+      FoldPreOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<int>, 0, 12);
+      FoldPostOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<int>, 0, 12);
 
       EqualVector(loctestnum, loctesterr, vec, vec2, false);
 
@@ -124,18 +155,18 @@ void mytestVectorDouble(uint & testnum, uint & testerr) {
       Empty(loctestnum, loctesterr, vec, false);
       Size(loctestnum, loctesterr, vec, true, 1);
 
-      SetAt(loctestnum, loctesterr, vec, true, 0, 1.0);
+      SetAt(loctestnum, loctesterr, vec, true, 0, 1.1);
 
-      GetFront(loctestnum, loctesterr, vec, true, 1.0);
-      GetBack(loctestnum, loctesterr, vec, true, 1.0);
+      GetFront(loctestnum, loctesterr, vec, true, 1.1);
+      GetBack(loctestnum, loctesterr, vec, true, 1.1);
 
-      Exists(loctestnum, loctesterr, vec, true, 1.0);
+      Exists(loctestnum, loctesterr, vec, true, 1.1);
 
       TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
       TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
 
-      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 1.0, 1.0);
-      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 1.0, 1.0);
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 1.1);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 1.1);
 
       EqualVector(loctestnum, loctesterr, vec, vec2, false);
       Size(loctestnum, loctesterr, vec2, true, 0);
@@ -155,6 +186,9 @@ void mytestVectorDouble(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
       TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
 
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 32.2);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 32.2);
+
       GetFront(loctestnum, loctesterr, vec, true, 4.6);
       GetBack(loctestnum, loctesterr, vec, true, 2.3);
 
@@ -163,15 +197,21 @@ void mytestVectorDouble(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
       TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
 
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 32.2);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 32.2);
+
       GetFront(loctestnum, loctesterr, vec, true, 1.8);
       GetBack(loctestnum, loctesterr, vec, true, 16.1);
 
-      SetAt(loctestnum, loctesterr, vec2, true, 0, 4.2);
-      SetAt(loctestnum, loctesterr, vec2, true, 1, 7.3);
-      SetAt(loctestnum, loctesterr, vec2, true, 2, 1.4);
+      SetAt(loctestnum, loctesterr, vec2, true, 0, 1.3);
+      SetAt(loctestnum, loctesterr, vec2, true, 1, 4.2);
+      SetAt(loctestnum, loctesterr, vec2, true, 2, 3.4);
 
       TraversePreOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<double>);
       TraversePostOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<double>);
+
+      FoldPreOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<double>, 0.0, 8.9);
+      FoldPostOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<double>, 0.0, 8.9);
 
       EqualVector(loctestnum, loctesterr, vec, vec2, false);
 
