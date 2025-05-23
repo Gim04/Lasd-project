@@ -95,7 +95,7 @@ void mytestVectorDouble(uint & testnum, uint & testerr) {
   uint loctestnum = 0, loctesterr = 0;
   cout << endl << "Begin of Vector<double> Test:" << endl;
   try {
-    {
+    {//caso 0
       lasd::SortableVector<double> vec;
       lasd::SortableVector<double> vec2;
       Empty(loctestnum, loctesterr, vec, true);
@@ -118,7 +118,29 @@ void mytestVectorDouble(uint & testnum, uint & testerr) {
       Size(loctestnum, loctesterr, vec2, true, 0);
 
     }
-    {
+    {//caso 1
+      lasd::SortableVector<double> vec(1);
+      lasd::SortableVector<double> vec2;
+      Empty(loctestnum, loctesterr, vec, false);
+      Size(loctestnum, loctesterr, vec, true, 1);
+
+      SetAt(loctestnum, loctesterr, vec, true, 0, 1.0);
+
+      GetFront(loctestnum, loctesterr, vec, true, 1.0);
+      GetBack(loctestnum, loctesterr, vec, true, 1.0);
+
+      Exists(loctestnum, loctesterr, vec, true, 1.0);
+
+      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
+      TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
+
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 1.0, 1.0);
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 1.0, 1.0);
+
+      EqualVector(loctestnum, loctesterr, vec, vec2, false);
+      Size(loctestnum, loctesterr, vec2, true, 0);
+    }
+    {//caso n
       lasd::SortableVector<double> vec(5);
       lasd::SortableVector<double> vec2(3);
       Empty(loctestnum, loctesterr, vec, false);
