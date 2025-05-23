@@ -47,7 +47,8 @@ namespace lasd {
     typename List<Data>::Node * List<Data>::Node::Clone(Node* tail) {
         if (next == nullptr) {
             return tail;
-        } else {
+        } else 
+        {
             Node* node = new Node(data);
             node->next = next->Clone(tail);
             return node;

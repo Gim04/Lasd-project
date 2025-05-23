@@ -4,8 +4,16 @@ namespace lasd {
     template <typename Data>
     Vector<Data>::Vector(const ulong size)
     {
+
         this->size = size;
-        buff = new Data[size];
+        if(size == 0)
+        {
+            buff = nullptr;
+        }else
+        {
+            buff = new Data[size];
+        }
+        
     }
 
     template <typename Data>
@@ -110,14 +118,14 @@ namespace lasd {
     template <typename Data>
     Data& Vector<Data>::Front()
     {
-        if(buff == nullptr) throw std::length_error("Empty vector!");
+        if(size == 0) throw std::length_error("Empty vector!");
         return buff[0];
     }
   
     template <typename Data>
     Data& Vector<Data>::Back()
     {
-        if(buff == nullptr) throw std::length_error("Empty vector!");
+        if(size == 0) throw std::length_error("Empty vector!");
         return buff[size-1];
     }
     
@@ -134,14 +142,14 @@ namespace lasd {
     template <typename Data>
     const Data& Vector<Data>::Front() const
     {
-        if(buff == nullptr) throw std::length_error("Empty vector!");
+        if(size == 0) throw std::length_error("Empty vector!");
         return buff[0];
     }
   
     template <typename Data>
     const Data& Vector<Data>::Back() const
     {
-        if(buff == nullptr) throw std::length_error("Empty vector!");
+        if(size == 0) throw std::length_error("Empty vector!");
         return buff[size-1];
     }
   

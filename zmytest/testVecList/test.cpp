@@ -46,7 +46,7 @@ void mytestVectorInt(uint & testnum, uint & testerr) {
 
     }
     {//caso 1
-       lasd::SortableVector<int> vec(1);
+      lasd::SortableVector<int> vec(1);
       lasd::SortableVector<int> vec2;
       Empty(loctestnum, loctesterr, vec, false);
       Size(loctestnum, loctesterr, vec, true, 1);
@@ -227,55 +227,73 @@ void mytestVectorDouble(uint & testnum, uint & testerr) {
 }
 
 void mytestVectorString(uint & testnum, uint & testerr) {
-  uint loctestnum = 0, loctesterr = 0;
+   uint loctestnum = 0, loctesterr = 0;
   cout << endl << "Begin of Vector<string> Test:" << endl;
+
   try {
-    lasd::SortableVector<string> vec(2);
+    {// Caso 0
+      lasd::SortableVector<string> vec0(0);
+      Empty(loctestnum, loctesterr, vec0, true);
+      Size(loctestnum, loctesterr, vec0, true, 0);
+      GetFront(loctestnum, loctesterr, vec0, false, string(""));
+      GetBack(loctestnum, loctesterr, vec0, false, string(""));
+      Exists(loctestnum, loctesterr, vec0, false, string("any"));
+    }
 
-    Empty(loctestnum, loctesterr, vec, false);
-    Size(loctestnum, loctesterr, vec, true, 2);
+    {// Caso stringhe vuote
+      lasd::SortableVector<string> vec(2);
+      SetAt(loctestnum, loctesterr, vec, true, 0, string(""));
+      SetAt(loctestnum, loctesterr, vec, true, 1, string("Test"));
 
-    SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
-    SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
+      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XTest"));
+      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XTest"));
+    }
+    {// Caso case sensitivity nel sort
+      lasd::SortableVector<string> vec(3);
+      SetAt(loctestnum, loctesterr, vec, true, 0, string("banana"));
+      SetAt(loctestnum, loctesterr, vec, true, 1, string("Apple"));
+      SetAt(loctestnum, loctesterr, vec, true, 2, string("cherry"));
+      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+      TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
 
-    GetFront(loctestnum, loctesterr, vec, true, string("A"));
-    GetBack(loctestnum, loctesterr, vec, true, string("B"));
+      vec.Sort();
 
-    Exists(loctestnum, loctesterr, vec, true, string("A"));
+      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+      TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+      GetFront(loctestnum, loctesterr, vec, true, string("Apple"));
+      GetBack(loctestnum, loctesterr, vec, true, string("cherry"));
+    }
+    {// Caso n e case sensitive
+      lasd::SortableVector<string> vec(7);
 
-    MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string(" ")); });
-    TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
-    FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XA B "));
-    FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XB A "));
+      SetAt(loctestnum, loctesterr, vec, true, 0, string("b"));
+      SetAt(loctestnum, loctesterr, vec, true, 1, string("E"));
+      SetAt(loctestnum, loctesterr, vec, true, 2, string("A"));
+      SetAt(loctestnum, loctesterr, vec, true, 3, string("g"));
+      SetAt(loctestnum, loctesterr, vec, true, 4, string("F"));
+      SetAt(loctestnum, loctesterr, vec, true, 5, string("c"));
+      SetAt(loctestnum, loctesterr, vec, true, 6, string("d"));
 
-    Exists(loctestnum, loctesterr, vec, false, string("A"));
+      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+      TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
 
-    lasd::SortableVector<string> copvec(vec);
-    EqualVector(loctestnum, loctesterr, vec, copvec, true);
-    MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string("!")); });
-    NonEqualVector(loctestnum, loctesterr, vec, copvec, true);
+      vec.Sort();
+      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+      TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
 
-    copvec = move(vec);
-    FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !"));
+      GetFront(loctestnum, loctesterr, vec, true, string("A"));
+      GetBack(loctestnum, loctesterr, vec, true, string("g"));
 
-    lasd::SortableVector<string> movvec(move(vec));
-    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
-    movvec.Sort();
-    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
-    SetAt(loctestnum, loctesterr, vec, false, 1, string(""));
-    vec.Resize(1);
-    SetAt(loctestnum, loctesterr, vec, true, 0, string("X"));
+      lasd::SortableVector<string> copyvec(vec);
+      copyvec = move(vec);
+      FoldPreOrder(loctestnum, loctesterr, copyvec, true, &FoldStringConcatenate, string("X"), string("XAEFbcdg")); 
+      MapPreOrder(loctestnum, loctesterr, copyvec, true, [](string & str) { MapStringAppend(str, string("X")); });
+    }
 
-    movvec.Clear();
-    Empty(loctestnum, loctesterr, movvec, true);
-  }
-  catch (...) {
+  } catch (...) {
     loctestnum++; loctesterr++;
     cout << endl << "Unmanaged error! " << endl;
   }
-  cout << "End of Vector<string> Test! (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
-  testnum += loctestnum;
-  testerr += loctesterr;
 }
 
 void mytestVector(uint & testnum, uint & testerr) {
