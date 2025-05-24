@@ -716,14 +716,14 @@ void mytestVectorListString(uint & testnum, uint & testerr) {
 
     // caso n 
     lasd::SortableVector<string> vec(3);
-    SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
-    SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
-    SetAt(loctestnum, loctesterr, vec, true, 2, string("C"));
+    SetAt(loctestnum, loctesterr, vec, true, 0, string("Violin"));
+    SetAt(loctestnum, loctesterr, vec, true, 1, string("Flaute"));
+    SetAt(loctestnum, loctesterr, vec, true, 2, string("Guitar"));
 
     lasd::List<string> lst;
-    InsertAtFront(loctestnum, loctesterr, lst, true, string("C"));
-    InsertAtFront(loctestnum, loctesterr, lst, true, string("B"));
-    InsertAtFront(loctestnum, loctesterr, lst, true, string("A"));
+    InsertAtFront(loctestnum, loctesterr, lst, true, string("Guitar"));
+    InsertAtFront(loctestnum, loctesterr, lst, true, string("Flaute"));
+    InsertAtFront(loctestnum, loctesterr, lst, true, string("Violin"));
 
     EqualLinear(loctestnum, loctesterr, vec, lst, true);
 
