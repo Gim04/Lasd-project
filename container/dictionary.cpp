@@ -23,7 +23,7 @@ namespace lasd {
         c.Map(
             [&](Data& d)
             {
-                ret &= Insert(d);
+                ret &= Insert(std::move(d));
             }
         );
 
@@ -65,7 +65,7 @@ namespace lasd {
         c.Map(
             [&](Data& d)
             {
-                ret |= Insert(d);
+                ret |= Insert(std::move(d));
             }
         );
 
