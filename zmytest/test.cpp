@@ -10,7 +10,7 @@ using namespace std;
 /* ************************************************************************** */
 
 void mytest() {
-  cout << endl << "~*~#~*~ Welcome to the LASD My test Suite ~*~#~*~ " << endl;
+  cout << endl << "~*~#~*~ LASD My test Suite ~*~#~*~ " << endl;
 
   uint loctestnum, loctesterr;
   uint stestnum = 0, stesterr = 0;

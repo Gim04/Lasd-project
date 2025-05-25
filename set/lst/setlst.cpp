@@ -288,13 +288,10 @@ namespace lasd {
             i++;
         }
 
-        // i è la posizione del primo >= value
         ulong indexToRemove = i - 1;
 
-        // Rimozione nodo in posizione indexToRemove
         if (indexToRemove == 0) 
         {
-            // Rimuovi testa
             Node* toDelete = this->head;
             this->head = this->head->next;
             toDelete->next = nullptr;
@@ -524,42 +521,41 @@ namespace lasd {
     template<typename Data>
     bool SetLst<Data>::Remove(const Data& d) 
     {
-        if (this->head == nullptr) // Lista vuota
+        if (this->head == nullptr) 
         {
             return false;
         }
 
-        Node* current = this->head;
+        Node* newHead = this->head;
         Node* prev = nullptr;
 
-        // Scorri la lista finché trovi un nodo >= value
-        while (current != nullptr && current->data < d) {
-            prev = current;
-            current = current->next;
+        while (newHead != nullptr && newHead->data < d) {
+            prev = newHead;
+            newHead = newHead->next;
         }
 
-        // Se non trovato o non corrisponde al valore esatto
-        if (current == nullptr || current->data != d)
+       
+        if (newHead == nullptr || newHead->data != d)
             return false;
 
-        // Caso 1: nodo da rimuovere è la testa
-        if (current == this->head) {
+    
+        if (newHead == this->head) {
             this->head = this->head->next;
-            if (this->tail == current)
+            if (this->tail == newHead)
                 this->tail = nullptr;
         }
-        // Caso 2: nodo da rimuovere è la coda
-        else if (current == this->tail) {
+     
+        else if (newHead == this->tail) {
             this->tail = prev;
             prev->next = nullptr;
         }
-        // Caso 3: nodo in mezzo
+        
         else {
-            prev->next = current->next;
+            prev->next = newHead->next;
         }
 
-        current->next = nullptr;
-        delete current;
+        newHead->next = nullptr;
+        delete newHead;
         --size;
         return true;
 

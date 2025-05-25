@@ -307,7 +307,7 @@ void mytestVector(uint & testnum, uint & testerr) {
   mytestVectorString(loctestnum, loctesterr);
   testnum += loctestnum;
   testerr += loctesterr;
-  cout << endl << "Exercise 1A - Vector (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
+  cout << endl << "My test - Vector (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
 }
 
 void mytestListInt(uint & testnum, uint & testerr) {
@@ -596,7 +596,7 @@ void mytestList(uint & testnum, uint & testerr) {
   mytestListString(loctestnum, loctesterr);
   testnum += loctestnum;
   testerr += loctesterr;
-  cout << endl << "Exercise 1A - List (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
+  cout << endl << "My test - List (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
 }
 
 void mytestVectorListInt(uint & testnum, uint & testerr) {
