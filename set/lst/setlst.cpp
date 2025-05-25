@@ -218,7 +218,7 @@ namespace lasd {
             throw std::length_error("Predecessor not found!");
         }
 
-        for(ulong i = size-1; i>=0; i--)
+        for(ulong i = size-1; i>0; i--)
         {
             if(operator[](i) < d)
             {
@@ -244,7 +244,7 @@ namespace lasd {
         }
         
         
-        for(ulong i = size-1; i>=0; i--)
+        for(ulong i = size-1; i>0; i--)
         {
             if(operator[](i) < d)
             {
